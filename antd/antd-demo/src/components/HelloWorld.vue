@@ -307,16 +307,242 @@
         </a-col>
       </a-row>
     </div>
+    <div>
+      <a-form-model ref="ruleForm" :model="ruleForm" :rules="rules" v-bind="layout">
+        <a-form-model-item has-feedback label="Password" prop="pass">
+          <a-input v-model="ruleForm.pass" type="password" autocomplete="off" />
+        </a-form-model-item>
+        <a-form-model-item has-feedback label="Confirm" prop="checkPass">
+          <a-input v-model="ruleForm.checkPass" type="password" autocomplete="off" />
+        </a-form-model-item>
+        <a-form-model-item has-feedback label="Age" prop="age">
+          <a-input v-model.number="ruleForm.age" />
+        </a-form-model-item>
+        <a-form-model-item :wrapper-col="{ span: 14, offset: 4 }">
+          <a-button type="primary" @click="submitForm('ruleForm')">
+            Submit
+          </a-button>
+          <a-button style="margin-left: 10px" @click="resetForm('ruleForm')">
+            Reset
+          </a-button>
+        </a-form-model-item>
+      </a-form-model>
+    </div>
+    <div>
+      <a-table
+          :columns="columns"
+          :data-source="data"
+          bordered
+          size="middle"
+          :scroll="{ x: 'calc(700px + 50%)', y: 240 }"
+      />
+    </div>
+    <div>
+      <a-form-model layout="inline" :model="formInline" @submit="handleSubmit" @submit.native.prevent>
+        <a-form-model-item>
+          <a-input v-model="formInline.user" placeholder="Username">
+            <a-icon slot="prefix" type="user" style="color:rgba(0,0,0,.25)" />
+          </a-input>
+        </a-form-model-item>
+        <a-form-model-item>
+          <a-input v-model="formInline.password" type="password" placeholder="Password">
+            <a-icon slot="prefix" type="lock" style="color:rgba(0,0,0,.25)" />
+          </a-input>
+        </a-form-model-item>
+        <a-form-model-item>
+          <a-button
+              type="primary"
+              html-type="submit"
+              :disabled="formInline.user === '' || formInline.password === ''"
+          >
+            Log in
+          </a-button>
+        </a-form-model-item>
+      </a-form-model>
+    </div>
   </div>
 
 </template>
 
 <script>
+const columns = [
+  {
+    title: 'Name',
+    dataIndex: 'name',
+    key: 'name',
+    width: 100,
+    fixed: 'left',
+    filters: [
+      {
+        text: 'Joe',
+        value: 'Joe',
+      },
+      {
+        text: 'John',
+        value: 'John',
+      },
+    ],
+    onFilter: (value, record) => record.name.indexOf(value) === 0,
+  },
+  {
+    title: 'Other',
+    children: [
+      {
+        title: 'Age',
+        dataIndex: 'age',
+        key: 'age',
+        width: 200,
+        sorter: (a, b) => a.age - b.age,
+      },
+      {
+        title: 'Address',
+        children: [
+          {
+            title: 'Street',
+            dataIndex: 'street',
+            key: 'street',
+            width: 200,
+          },
+          {
+            title: 'Block',
+            children: [
+              {
+                title: 'Building',
+                dataIndex: 'building',
+                key: 'building',
+                width: 100,
+              },
+              {
+                title: 'Door No.',
+                dataIndex: 'number',
+                key: 'number',
+                width: 100,
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+  {
+    title: 'Company',
+    children: [
+      {
+        title: 'Company Address',
+        dataIndex: 'companyAddress',
+        key: 'companyAddress',
+        width: 200,
+      },
+      {
+        title: 'Company Name',
+        dataIndex: 'companyName',
+        key: 'companyName',
+      },
+    ],
+  },
+  {
+    title: 'Gender',
+    dataIndex: 'gender',
+    key: 'gender',
+    width: 80,
+    fixed: 'right',
+  },
+];
+
+const data = [];
+for (let i = 0; i < 100; i++) {
+  data.push({
+    key: i,
+    name: 'John Brown',
+    age: i + 1,
+    street: 'Lake Park',
+    building: 'C',
+    number: 2035,
+    companyAddress: 'Lake Street 42',
+    companyName: 'SoftLake Co',
+    gender: 'M',
+  });
+}
+
 export default {
   data() {
-    return {
-      collapsed: false,
+    let checkPending;
+    let checkAge = (rule, value, callback) => {
+      clearTimeout(checkPending);
+      if (!value) {
+        return callback(new Error('Please input the age'));
+      }
+      checkPending = setTimeout(() => {
+        if (!Number.isInteger(value)) {
+          callback(new Error('Please input digits'));
+        } else {
+          if (value < 18) {
+            callback(new Error('Age must be greater than 18'));
+          } else {
+            callback();
+          }
+        }
+      }, 1000);
     };
+    let validatePass = (rule, value, callback) => {
+      if (value === '') {
+        callback(new Error('Please input the password'));
+      } else {
+        if (this.ruleForm.checkPass !== '') {
+          this.$refs.ruleForm.validateField('checkPass');
+        }
+        callback();
+      }
+    };
+    let validatePass2 = (rule, value, callback) => {
+      if (value === '') {
+        callback(new Error('Please input the password again'));
+      } else if (value !== this.ruleForm.pass) {
+        callback(new Error("Two inputs don't match!"));
+      } else {
+        callback();
+      }
+    };
+    return {
+      formInline: {
+        user: '',
+        password: '',
+      },
+      data,
+      columns,
+      ruleForm: {
+        pass: '',
+        checkPass: '',
+        age: '',
+      },
+      rules: {
+        pass: [{ validator: validatePass, trigger: 'change' }],
+        checkPass: [{ validator: validatePass2, trigger: 'change' }],
+        age: [{ validator: checkAge, trigger: 'change' }],
+      },
+      layout: {
+        labelCol: { span: 4 },
+        wrapperCol: { span: 14 },
+      },
+    };
+  },
+  methods: {
+    submitForm(formName) {
+      this.$refs[formName].validate(valid => {
+        if (valid) {
+          alert('submit!');
+        } else {
+          console.log('error submit!!');
+          return false;
+        }
+      });
+    },
+    resetForm(formName) {
+      this.$refs[formName].resetFields();
+    },
+    handleSubmit() {
+      console.log(this.formInline);
+    },
   },
 };
 </script>
