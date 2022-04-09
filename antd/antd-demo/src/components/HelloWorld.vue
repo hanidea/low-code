@@ -1,6 +1,24 @@
 <template>
   <div>
   <div>
+    <a-row type="flex">
+    <a-col span:4>
+      <div v-for="(itemtt,indextt) in headerArray" :key="indextt" style="width:100px;margin-top:23px;">
+      <div v-for="(itemw,indexww) in itemtt" :key="indexww">
+        <div style="border:1px solid darkgreen;">{{itemw}}</div>
+      </div>
+      </div>
+    </a-col>
+    <a-col span:16>
+      <a-row v-for="(item, index) in sampleArray" :key="index" type="flex" style="width: 1200px;">
+        <template v-for="items in item">
+          <template v-for="(itemss, indexs) in items" >
+            <a-col :flex="width" :key="indexs" style="border:1px solid blue;width: 100px;">{{itemss}}</a-col>
+          </template>
+        </template>
+      </a-row>
+    </a-col>
+    </a-row>
   <a-layout id="components-layout-demo-custom-trigger">
     <a-layout-sider v-model="collapsed" :trigger="null" collapsible>
       <div class="logo" />
@@ -30,7 +48,13 @@
       <a-layout-content
           :style="{ margin: '24px 16px', padding: '24px', background: '#fff', minHeight: '280px' }"
       >
-        Content
+        <Pivot
+            :data="data"
+            v-model="fields"
+            :reducer="reducer"
+            :showSettings="defaultShowSettings"
+        >
+        </Pivot>
       </a-layout-content>
     </a-layout>
   </a-layout>
@@ -365,6 +389,8 @@
 </template>
 
 <script>
+import { Pivot } from 'vue-pivot-table-plus'
+
 const columns = [
   {
     title: 'Name',
@@ -465,7 +491,9 @@ for (let i = 0; i < 100; i++) {
 }
 
 export default {
+  components:{Pivot},
   data() {
+
     let checkPending;
     let checkAge = (rule, value, callback) => {
       clearTimeout(checkPending);
@@ -504,11 +532,71 @@ export default {
       }
     };
     return {
+      headerArray:[{
+        he1:"he1",
+        he2:"he2"
+      }],
+      sampleArray:[
+        [{
+          key1:"header1",
+          key2:"header2",
+          key3:"header3",
+          key4:"header4",
+          key5:"header5",
+          key6:"header6",
+          key7:"header7",
+          key8:"header8",
+          key9:"header9",
+          key10:"header10"
+        }],
+        [{
+          key1:95,
+          key2:27,
+          key3:31,
+          key4:80,
+          key5:43,
+          key6:70,
+          key7:28,
+          key8:70,
+          key9:95,
+          key10:41
+        }],
+        [{
+          key1:66,
+          key2:36,
+          key3:90,
+          key4:59,
+          key5:1,
+          key6:31,
+          key7:45,
+          key8:58,
+          key9:72,
+          key10:32,
+        }]
+      ],
+      data: Object.freeze([{ x: 0, y: 0, z: 0 }, { x: 1, y: 1, z: 1 }]),
+      fields: {
+        availableFields: [],
+        rowFields: [{
+          getter: item => item.x,
+          label: 'X-axis'
+        }, {
+          getter: item => item.y,
+          label: 'Y-axis',
+        }],
+        colFields: [{
+          getter: item => item.z,
+          label: 'Z-axis'
+        }],
+        fieldsOrder: {}
+      },
+      //reducer: (sum, item) => sum + 1,
+      defaultShowSettings: true,
+      tableHeight: '400px',
       formInline: {
         user: '',
         password: '',
       },
-      data,
       columns,
       ruleForm: {
         pass: '',
