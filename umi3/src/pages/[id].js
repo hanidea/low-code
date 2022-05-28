@@ -1,9 +1,8 @@
 import { Component } from "react";
-
-export default class Id extends Component{
+export default class Id extends Component {
   constructor(props){
     super(props);
-    this.state = {}
+    this.state={}
   }
   render(){
     console.log(this.props)
