@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import {SearchBar} from 'antd-mobile';
+import SearchContext from './searchContext';
 
 export default class Search extends Component {
+  static contextType = SearchContext;
 
   constructor(props) {
     super(props);
@@ -17,8 +19,12 @@ export default class Search extends Component {
   }
 
   handleSubmit = ()=>{
-    this.props.dispatch({
-      type:'search/getListsAsync',
+    // this.context.dispatch({
+    //   type:'TEXT',
+    //   payload: this.state.value
+    // })
+    this.context.dispatch({
+      type:'LISTS',
       payload: this.state.value
     })
   }

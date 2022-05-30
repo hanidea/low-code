@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import {List} from 'antd-mobile';
+import SearchContext from './searchContext';
 
 export default class Lists extends Component {
+  static contextType = SearchContext;
 
   constructor(props) {
     super(props);
@@ -11,8 +13,8 @@ export default class Lists extends Component {
   }
 
   render() {
-    console.log(this.props)
-    const {text,lists} = this.props.search;
+    console.log(this)
+    const {text, lists} = this.context.state;
     return (
       <div>
         <h1>text: {text}</h1>
