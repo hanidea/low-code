@@ -1,11 +1,11 @@
-import React, { Component } from 'react';
+import React, { Component, PureComponent } from 'react';
 
-export default class ComponentOld extends Component {
+export default class ComponentOld extends PureComponent {
 
   constructor(props) {
     super(props);
     this.state = {
-        text:'demo'
+        text:{id:1}
     };
     console.log('constructor');
     //this.handleClick = this.handleClick.bind(this);
@@ -15,18 +15,41 @@ export default class ComponentOld extends Component {
     console.log('componentWillMount');
   }
   componentDidMount(){
-    console.log('componentDidMount')
+    console.log('componentDidMount');
   }
 
-  handleClick(){
-    alert()
+  componentWillUpdate(){
+    console.log('componentWillUpdate');
+  }
+
+  componentDidUpdate(){
+    console.log('componentDidUpdate');
+  }
+
+  // shouldComponentUpdate(props, state) {
+  //   console.log('shouldComponentUpdate');
+  //   console.log(props,state);
+  //   if(state.text === 'demo-new' && this.state.text !== state.text){
+  //     return true;
+  //   }
+  //   return false;
+  // }
+
+  handleClick=()=>{
+    this.setState({
+      text:{id:2}
+    })
+  }
+
+  componentWillUnmount(){
+    console.log('componentWillUnmount');
   }
 
   render() {
     console.log('render');
     return (
-      <div onClick={this.handleClick.bind(this)}>
-          component-old--{this.state.text}
+      <div onClick={this.handleClick}>
+          component-old--{this.state.text.id}
       </div>
     )
   }
