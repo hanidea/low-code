@@ -1,52 +1,45 @@
 {
-  "name": "egg",
-  "version": "1.0.0",
-  "description": "",
   "private": true,
-  "egg": {
-    "declarations": true
+  "scripts": {
+    "start": "umi dev",
+    "build": "umi build",
+    "test": "umi test",
+    "lint": "eslint --ext .js src mock tests",
+    "precommit": "lint-staged"
   },
   "dependencies": {
-    "dayjs": "^1.11.3",
-    "egg": "^2.15.1",
-    "egg-mysql": "^3.1.1",
-    "egg-scripts": "^2.11.0",
-    "egg-sequelize": "^6.0.0",
-    "egg-validate": "^2.0.2",
-    "egg-view-ejs": "^2.0.1",
-    "mysql2": "^2.3.3"
+    "dayjs": "^1.8.29",
+    "project-libs": "^1.1.3",
+    "prop-types": "^15.7.2",
+    "rc-form": "^2.4.11",
+    "react": "^16.13.1",
+    "react-awesome-swiper": "^1.4.16",
+    "react-dom": "^16.13.1",
+    "react-icons": "^3.10.0",
+    "think-react-store": "^1.6.6"
   },
   "devDependencies": {
-    "autod": "^3.0.1",
-    "autod-egg": "^1.1.0",
-    "egg-bin": "^4.11.0",
-    "egg-ci": "^1.11.0",
-    "egg-mock": "^3.21.0",
-    "eslint": "^5.13.0",
-    "eslint-config-egg": "^7.1.0"
+    "@umijs/preset-react": "^1.5.19",
+    "@umijs/test": "^3.2.10",
+    "babel-eslint": "^9.0.0",
+    "eslint": "^5.4.0",
+    "eslint-config-umi": "^1.4.0",
+    "eslint-plugin-flowtype": "^2.50.0",
+    "eslint-plugin-import": "^2.14.0",
+    "eslint-plugin-jsx-a11y": "^5.1.1",
+    "eslint-plugin-react": "^7.11.1",
+    "husky": "^0.14.3",
+    "lint-staged": "^7.2.2",
+    "react-test-renderer": "^16.7.0",
+    "umi": "^3.2.10"
+  },
+  "lint-staged": {
+    "*.{js,jsx}": [
+      "eslint --fix",
+      "git add"
+    ]
   },
   "engines": {
-    "node": ">=10.0.0"
-  },
-  "scripts": {
-    "start": "egg-scripts start --daemon --title=egg-server-egg",
-    "stop": "egg-scripts stop --title=egg-server-egg",
-    "dev": "egg-bin dev",
-    "debug": "egg-bin debug",
-    "test": "npm run lint -- --fix && npm run test-local",
-    "test-local": "egg-bin test",
-    "cov": "egg-bin cov",
-    "lint": "eslint .",
-    "ci": "npm run lint && npm run cov",
-    "autod": "autod"
-  },
-  "ci": {
-    "version": "10"
-  },
-  "repository": {
-    "type": "git",
-    "url": ""
-  },
-  "author": "",
-  "license": "MIT"
+    "node": ">=8.0.0"
+  }
 }
