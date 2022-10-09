@@ -1,0 +1,26 @@
+{
+  "name": "@51hanhan-dev/core",
+  "version": "0.0.0",
+  "description": "> TODO: description",
+  "author": "hanidea <hydavid@126.com>",
+  "homepage": "https://github.com/hanidea/low-code#readme",
+  "license": "ISC",
+  "main": "lib/core.js",
+  "directories": {
+    "lib": "lib",
+    "test": "__tests__"
+  },
+  "files": [
+    "lib"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hanidea/low-code.git"
+  },
+  "scripts": {
+    "test": "node ./__tests__/core.test.js"
+  },
+  "bugs": {
+    "url": "https://github.com/hanidea/low-code/issues"
+  }
+}

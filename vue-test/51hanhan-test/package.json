@@ -12,5 +12,7 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "dependencies": {}
+  "dependencies": {
+    "51hanhan-test-lib": "^1.0.1"
+  }
 }
