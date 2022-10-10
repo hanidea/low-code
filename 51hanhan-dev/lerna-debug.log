@@ -1,0 +1,24 @@
+0 silly argv { _: [ 'version' ], lernaVersion: '5.6.1', '$0': 'lerna' }
+1 notice cli v5.6.1
+2 verbose rootPath /Users/junjiezhang/developer/low-code/51hanhan-dev
+3 info current version 0.0.0
+4 silly isAnythingCommitted
+5 verbose isAnythingCommitted 1
+6 silly getCurrentBranch
+7 verbose currentBranch dev
+8 silly remoteBranchExists
+9 silly isBehindUpstream
+10 error Error: Command failed with exit code 1: git remote update
+10 error kex_exchange_identification: read: Connection reset by peer
+10 error Connection reset by 140.82.113.4 port 22
+10 error fatal: 无法读取远程仓库。
+10 error
+10 error 请确认您有正确的访问权限并且仓库存在。
+10 error error: 不能获取 origin
+10 error 正在获取 origin
+10 error     at makeError (/Users/junjiezhang/developer/low-code/51hanhan-dev/node_modules/execa/lib/error.js:60:11)
+10 error     at Function.module.exports.sync (/Users/junjiezhang/developer/low-code/51hanhan-dev/node_modules/execa/index.js:194:17)
+10 error     at Object.execSync (/Users/junjiezhang/developer/low-code/51hanhan-dev/node_modules/@lerna/child-process/index.js:39:16)
+10 error     at updateRemote (/Users/junjiezhang/developer/low-code/51hanhan-dev/node_modules/@lerna/version/lib/is-behind-upstream.js:34:16)
+10 error     at isBehindUpstream (/Users/junjiezhang/developer/low-code/51hanhan-dev/node_modules/@lerna/version/lib/is-behind-upstream.js:16:3)
+10 error     at VersionCommand.initialize (/Users/junjiezhang/developer/low-code/51hanhan-dev/node_modules/@lerna/version/index.js:156:9)
