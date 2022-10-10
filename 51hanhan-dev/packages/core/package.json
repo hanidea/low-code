@@ -6,6 +6,9 @@
   "homepage": "https://github.com/hanidea/low-code#readme",
   "license": "ISC",
   "main": "lib/core.js",
+  "bin":{
+    "51hanhan-dev":"bin/index.js"
+  },
   "directories": {
     "lib": "lib",
     "test": "__tests__"
@@ -22,5 +25,6 @@
   },
   "bugs": {
     "url": "https://github.com/hanidea/low-code/issues"
-  }
+  },
+  "gitHead": "762b35c5aa53d44337136a77f27cbd22dcba2c69"
 }
