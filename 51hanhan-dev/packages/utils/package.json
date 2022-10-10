@@ -23,5 +23,8 @@
   "bugs": {
     "url": "https://github.com/hanidea/low-code/issues"
   },
-  "gitHead": "eb5e79be6d9f106ca197af3711330c6c9546b739"
+  "gitHead": "a95de927758a1dc65aa93102db04000a52c56f55",
+  "publishConfig": {
+    "access": "public"
+  }
 }
