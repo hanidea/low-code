@@ -1,6 +1,6 @@
 {
   "name": "@51hanhan-dev/core",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "> TODO: description",
   "author": "hanidea <hydavid@126.com>",
   "homepage": "https://github.com/hanidea/low-code#readme",
@@ -27,7 +27,7 @@
     "url": "https://github.com/hanidea/low-code/issues"
   },
   "gitHead": "eb5e79be6d9f106ca197af3711330c6c9546b739",
-  "publishConfig":{
+  "publishConfig": {
     "access": "public"
   }
 }
