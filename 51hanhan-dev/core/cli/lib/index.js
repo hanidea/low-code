@@ -3,5 +3,10 @@
 module.exports = core;
 
 function core() {
-    return "Hello from cli";
+    // console.log("exec core");
+    checkPkgVersion();
+}
+const pkg = require('../package.json');
+function checkPkgVersion() {
+    console.log(pkg.version);
 }

@@ -1,7 +1,6 @@
 'use strict';
 
-module.exports = log;
+module.exports = index;
 
-function log() {
-    return "Hello from log";
+function index() {
 }

@@ -14,5 +14,9 @@
   },
   "workspaces": [
     "packages/*"
-  ]
+  ],
+  "dependencies": {
+    "import-local": "^3.1.0",
+    "npmlog": "^6.0.2"
+  }
 }

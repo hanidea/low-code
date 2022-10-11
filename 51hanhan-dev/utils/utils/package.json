@@ -18,7 +18,7 @@
     "url": "git+https://github.com/hanidea/low-code.git"
   },
   "scripts": {
-    "test": "node ./__tests__/utils.test.js"
+    "test": "node __tests__/utils.test.js"
   },
   "bugs": {
     "url": "https://github.com/hanidea/low-code/issues"

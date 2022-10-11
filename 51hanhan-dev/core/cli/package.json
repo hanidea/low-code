@@ -5,7 +5,7 @@
   "author": "hanidea <hydavid@126.com>",
   "homepage": "https://github.com/hanidea/low-code#readme",
   "license": "ISC",
-  "main": "lib/core.js",
+  "main": "",
   "bin": {
     "51hanhan-dev": "bin/index.js"
   },
@@ -24,7 +24,9 @@
     "test": "node __tests__/core.test.js"
   },
   "dependencies": {
-    "@51hanhan-dev/utils": "file:../../utils/utils"
+    "@51hanhan-dev/utils": "file:../../utils/utils",
+    "import-local": "^3.1.0",
+    "npmlog": "^6.0.2"
   },
   "bugs": {
     "url": "https://github.com/hanidea/low-code/issues"
