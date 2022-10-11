@@ -1,14 +1,11 @@
 {
-  "name": "@51hanhan-dev/core",
+  "name": "@imooc-cli-dev/log",
   "version": "0.0.4",
   "description": "> TODO: description",
   "author": "hanidea <hydavid@126.com>",
   "homepage": "https://github.com/hanidea/low-code#readme",
   "license": "ISC",
-  "main": "lib/core.js",
-  "bin": {
-    "51hanhan-dev": "bin/index.js"
-  },
+  "main": "lib/log.js",
   "directories": {
     "lib": "lib",
     "test": "__tests__"
@@ -16,18 +13,17 @@
   "files": [
     "lib"
   ],
+  "publishConfig": {
+    "access": "public"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/hanidea/low-code.git"
   },
   "scripts": {
-    "test": "node ./__tests__/core.test.js"
+    "test": "node ./__tests__/@imooc-cli-dev/log.test.js"
   },
   "bugs": {
     "url": "https://github.com/hanidea/low-code/issues"
-  },
-  "gitHead": "a95de927758a1dc65aa93102db04000a52c56f55",
-  "publishConfig": {
-    "access": "public"
   }
 }
