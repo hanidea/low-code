@@ -25,10 +25,16 @@
   },
   "dependencies": {
     "@51hanhan-dev/log": "file:../../utils/log",
+    "@51hanhan-dev/get-npm-info": "file:../../utils/get-npm-info",
     "colors": "^1.4.0",
+    "dotenv": "^8.2.0",
     "import-local": "^3.1.0",
+    "minimist": "^1.2.5",
     "npmlog": "^6.0.2",
-    "semver": "^7.3.8"
+    "path-exists": "^4.0.0",
+    "root-check": "^1.0.0",
+    "semver": "^7.3.8",
+    "user-home": "^2.0.0"
   },
   "bugs": {
     "url": "https://github.com/hanidea/low-code/issues"
