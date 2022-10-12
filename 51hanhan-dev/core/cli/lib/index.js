@@ -7,6 +7,7 @@ function core() {
     checkPkgVersion();
 }
 const pkg = require('../package.json');
+const log = require('@51hanhan-dev/log');
 function checkPkgVersion() {
-    console.log(pkg.version);
+    log.notice('cli',pkg.version);
 }

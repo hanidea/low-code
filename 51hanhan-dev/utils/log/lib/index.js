@@ -1,6 +1,14 @@
 'use strict';
 
-module.exports = index;
+const log = require('npmlog');
 
-function index() {
-}
+log.level = process.env.LOG_LEVEL? process.env.LOG_LEVEL:'info';//判断debug模式
+log.heading = "51hanhan";
+log.headingStyle = {fg:'red',bg:'black'}; //修改前缀
+log.addLevel('success',2000,{fg:'green',bold:true}); //添加自定义命令
+
+module.exports = log;
+
+// function index() {
+//     log.info('cli','test');
+// }
