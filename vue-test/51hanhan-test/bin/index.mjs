@@ -12,5 +12,5 @@
 // 加载: import
 // 输出: export default / export function/const
 
-require('./core.mjs')
+import './core.mjs'
 
