@@ -24,9 +24,11 @@
     "test": "node __tests__/core.test.js"
   },
   "dependencies": {
-    "@51hanhan-dev/log": "file:../../utils/log",
     "@51hanhan-dev/get-npm-info": "file:../../utils/get-npm-info",
+    "@51hanhan-dev/log": "file:../../utils/log",
+    "@51hanhan-dev/init": "file:../../commands/init",
     "colors": "^1.4.0",
+    "commander": "^9.4.1",
     "dotenv": "^8.2.0",
     "import-local": "^3.1.0",
     "minimist": "^1.2.5",
