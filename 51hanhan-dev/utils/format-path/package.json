@@ -1,5 +1,5 @@
 {
-  "name": "@51hanhan-dev/log",
+  "name": "@51hanhan-dev/format-path",
   "version": "0.0.4",
   "description": "> TODO: description",
   "author": "hanidea <hydavid@126.com>",
@@ -14,19 +14,16 @@
     "lib"
   ],
   "publishConfig": {
-    "registry": "https://registry.npm.taobao.org"
+    "registry": "https://registry.npm.taobao.org/"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/hanidea/low-code.git"
   },
   "scripts": {
-    "test": "node ./__tests__/@51hanhan-dev/log.test.js"
+    "test": "node ./__tests__/@51hanhan-dev/format-path.test.js"
   },
   "bugs": {
     "url": "https://github.com/hanidea/low-code/issues"
-  },
-  "dependencies": {
-    "npmlog": "^4.1.2"
   }
 }

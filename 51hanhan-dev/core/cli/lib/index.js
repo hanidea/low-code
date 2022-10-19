@@ -13,20 +13,15 @@ const pkg = require('../package.json');
 const log = require('@51hanhan-dev/log');
 const constant = require('./const');
 const dotenv = require("dotenv");
-const init = require('@51hanhan-dev/init')
+const init = require('@51hanhan-dev/init');
+const exec = require('@51hanhan-dev/exec');
 
 const program = new commander.Command();
 
 async function core() {
     // console.log("exec core");
     try {
-        checkPkgVersion();
-        checkNodeVersion();
-        checkRoot();
-        checkUserHome();
-        //checkInputArgs()
-        checkEnv();
-        await checkGlobalUpdate()
+        await prepare();
         registerCommand();
         //log.verbose('debug','test debug log');
     }catch(e){
@@ -45,18 +40,23 @@ function registerCommand(){
     program
        .command('init [projectName]')
        .option('-f, --force','是否强制初始化项目')
-       .action(init);
+       .action(exec);
 
     //开启debug模式
     program.on('option:debug',function(){
-        if(program.debug){
-            program.env.LOG_LEVEL = 'verbose';
+        if(program.opts().debug){
+            process.env.LOG_LEVEL = 'verbose';
         }else{
             process.env.LOG_LEVEL = 'info';
         }
         log.level = process.env.LOG_LEVEL;
-        log.verbose('test');
     });
+
+    //指定targetPath
+    program.on('option:targetPath',function(){
+        //console.log(program.targetPath);
+        process.env.CLI_TARGET_PATH = program.opts().targetPath;
+    })
 
     //未知命令的监听
     program.on('command:*',function(obj){
@@ -66,12 +66,21 @@ function registerCommand(){
         console.log(colors.red('可用命令:'+availableCommands.join(',')));
        }
     })
-    
+
     if(process.args && process.args.length<1){
         program.outputHelp();
         console.log();
     }
     program.parse(process.argv);
+}
+
+async function prepare(){
+    checkPkgVersion();
+    checkNodeVersion();
+    checkRoot();
+    checkUserHome();
+    checkEnv();
+    await checkGlobalUpdate()
 }
 
 async function checkGlobalUpdate(){
@@ -95,7 +104,7 @@ function checkEnv(){
         });
     }
     createDefaultConfig();
-    log.verbose('环境变量', process.env.CLI_HOME_PATH);
+    //log.verbose('环境变量', process.env.CLI_HOME_PATH);
 }
 
 function createDefaultConfig(){
@@ -109,21 +118,6 @@ function createDefaultConfig(){
     }
     process.env.CLI_HOME_PATH = cliConfig.cliHome;
     //return cliConfig
-}
-
-function checkInputArgs(){
-    const minimist = require('minimist');
-    args = minimist(process.argv.slice(2));
-    checkArgs();
-}
-
-function checkArgs(){
-    if(args.debug){
-        process.env.LOG_LEVEL = 'verbose';
-    }else{
-        process.env.LOG_LEVEL = 'info';
-    }
-    log.level = process.env.LOG_LEVEL;
 }
 
 function checkUserHome(){
