@@ -8,7 +8,7 @@ const log = require('@51hanhan-dev/log');
 const LOWEST_NODE_VERSION = '12.0.0';
 class Command {
     constructor(argv){
-        // console.log('Command constructor',argv);
+        console.log('Command constructor',argv);
         if(!argv){
             throw new Error('参数不能为空!');
         }
