@@ -13,7 +13,7 @@ const pkg = require('../package.json');
 const log = require('@51hanhan-dev/log');
 const constant = require('./const');
 const dotenv = require("dotenv");
-const init = require('@51hanhan-dev/init');
+
 const exec = require('@51hanhan-dev/exec');
 
 const program = new commander.Command();
@@ -76,7 +76,6 @@ function registerCommand(){
 
 async function prepare(){
     checkPkgVersion();
-    checkNodeVersion();
     checkRoot();
     checkUserHome();
     checkEnv();
@@ -133,17 +132,6 @@ function checkRoot(){
     rootCheck();
     //console.log(process.geteuid());
 
-}
-
-function checkNodeVersion(){
-    // 第一步，获取当前Node版本号
-    const currentVersion = process.version;
-    //console.log(process.version);
-    // 第二步，比对最低版本号
-    const lowestVersion = constant.LOWEST_NODE_VERSION;
-    if(!semver.gte(currentVersion,lowestVersion)){
-        throw new Error(colors.red(`需要安装 v${lowestVersion}以上版本的node.js`));
-    }
 }
 
 function checkPkgVersion() {

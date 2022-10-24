@@ -52,9 +52,14 @@ async function exec() {
     //console.log(await pkg.exists());
     const rootFile =  pkg.getRootFilePath();
     if(rootFile){
+        try{
         //在当前进程中调用
-        require(rootFile).apply(null, arguments);
+        require(rootFile).call(null, Array.from(arguments));
         //在node子进程中调用
+        } catch(e){
+            log.error(e.message);
+        }
+        
     }    
 }
 

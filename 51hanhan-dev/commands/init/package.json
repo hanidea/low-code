@@ -25,5 +25,9 @@
   },
   "bugs": {
     "url": "https://github.com/hanidea/low-code/issues"
+  },
+  "dependencies": {
+    "@51hanhan-dev/command": "file:../../models/command",
+    "@51hanhan-dev/log": "file:../../utils/log"
   }
 }

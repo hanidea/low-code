@@ -25,5 +25,10 @@
   },
   "bugs": {
     "url": "https://github.com/hanidea/low-code/issues"
+  },
+  "dependencies": {
+    "colors": "^1.4.0",
+    "semver": "^7.3.8",
+    "@51hanhan-dev/log": "file:../../utils/log"
   }
 }
