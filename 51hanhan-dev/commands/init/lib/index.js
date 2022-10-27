@@ -26,7 +26,7 @@ class InitCommand extends Command {
     }
         async prepare(){
         const localPath = process.cwd();
-        console.log(this.isDirEmpty(localPath));
+        console.log('目录'+this.isDirEmpty(localPath));
         // 1.判断当前目录是否为空
         if(!this.isDirEmpty(localPath)){
             let ifContinue = false;
@@ -53,7 +53,12 @@ class InitCommand extends Command {
                     //清空当前目录
                     fse.emptyDirSync(localPath);
                 } 
-            };
+            }
+            return this.getProjectInfo();
+        }
+
+        getProjectInfo(){
+
         }
         // fs.readdirSync()
         // 2.是否启动强制更新
@@ -64,11 +69,10 @@ class InitCommand extends Command {
     isDirEmpty(localPath){
         let fileList = fs.readdirSync(localPath);
         // 文件过滤的逻辑
-        //console.log(fileList);
-        fileList = fileList.filter(file =>(
+        fileList = fileList.filter(file => (
             !file.startsWith('.') && ['node_modules'].indexOf(file) < 0
-        ));
-        return !fileList && fileList.length <= 0;
+        )); 
+        return !!fileList && fileList.length <= 0
     }
 }
 

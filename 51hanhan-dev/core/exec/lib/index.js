@@ -6,7 +6,7 @@ const Package = require('@51hanhan-dev/package');
 const log = require('@51hanhan-dev/log');
 
 const SETTINGS = {
-    init:"@imooc-cli/init"
+    init:""
 }
 
 const CACHE_DIR = 'dependencies';
@@ -25,6 +25,7 @@ async function exec() {
 
     if(!targetPath){
         //生成缓存路径
+        console.log('in');
         targetPath = path.resolve(homePath,CACHE_DIR);
         storeDir = path.resolve(targetPath,'node_modules');
         //console.log(targetPath,storeDir);
@@ -68,12 +69,14 @@ async function exec() {
             o[key] = cmd[key];
             }
         });
-      args[args.length - 1] = o;
-        const code = `require('${rootFile}').call(null, ${JSON.stringify(args)})`;
-        const child = cp.spawn('node',['-e',code],{
+        args[args.length - 1] = o;
+            const code = `require('${rootFile}').call(null, ${JSON.stringify(args)})`;
+            const child = cp.spawn('node', ['-e', code], {
             cwd: process.cwd(),
             stdio:'inherit',
+            
         });
+
         child.on('error', e=>{
             log.error(e.message);
             process.exit(1);
