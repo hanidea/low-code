@@ -39,7 +39,7 @@ function registerCommand(){
 
     program
        .command('init [projectName]')
-       .option('-f, --force','是否强制初始化项目')
+       .option('-f,--force','是否强制初始化项目')
        .action(exec);
 
     //开启debug模式

@@ -28,6 +28,8 @@
   },
   "dependencies": {
     "@51hanhan-dev/command": "file:../../models/command",
-    "@51hanhan-dev/log": "file:../../utils/log"
+    "@51hanhan-dev/log": "file:../../utils/log",
+    "fs-extra": "^9.0.1",
+    "inquirer": "^7.3.3"
   }
 }
