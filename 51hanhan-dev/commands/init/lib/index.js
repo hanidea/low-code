@@ -4,6 +4,8 @@ const Command = require('@51hanhan-dev/command');
 const fse = require('fs-extra');
 const inquirer = require('inquirer');
 const log = require('@51hanhan-dev/log');
+const TYPE_PROJECT = 'project';
+const TYPE_COMPONENT = 'component';
  
 class InitCommand extends Command {
     init(){
@@ -42,7 +44,9 @@ class InitCommand extends Command {
                     return;
                 }
             }
+            // 2.是否启动强制更新
             if(ifContinue || this.force){
+                // 给用户做二次确认
                 const{confirmDelete} = await inquirer.prompt({
                     type:'confirm',
                     name:'confirmDelete',
@@ -56,15 +60,55 @@ class InitCommand extends Command {
             }
             return this.getProjectInfo();
         }
+    }
+        async getProjectInfo() {
+            const projectInfo = {};
+            // 1.选择创建项目或组件
+            const {type} = await inquirer.prompt({
+                type:'list',
+                name:'type',
+                message:'请选择初始化类型',
+                default: TYPE_PROJECT,
+                choices:[{
+                    name:'项目',
+                    value: TYPE_PROJECT
+                },{
+                    name:'组件',
+                    value: TYPE_COMPONENT,
+                }]
+            });
+            log.verbose('type',type);
+            if (type === TYPE_PROJECT){
+            // 2.获取项目的基本信息
+            const o = await inquirer.prompt([{
+                type:'input',
+                name:'projectName',
+                message:'请输入项目名称',
+                default:'',
+                validate: function(v){
+                    return typeof v === 'string';
+                },
+                filter:function(v){
+                    return v;
+                }
+            },{
+                type:'input',
+                name:'projectVersion',
+                message:'请输入项目版本号',
+                default:'',
+                validate: function(v){
+                    return typeof v === 'string';
+                },
+                filter:function(v){
+                    return v;
+                }
+            }]);
+            console.log(o);
+            }else if (type === TYPE_COMPONENT){
 
-        getProjectInfo(){
-
-        }
-        // fs.readdirSync()
-        // 2.是否启动强制更新
-        // 3.选择创建项目或组件
-        // 4.获取项目的基本信息
-
+            }
+            // 项目的基本信息(object)
+            return projectInfo;
     }
     isDirEmpty(localPath){
         let fileList = fs.readdirSync(localPath);
