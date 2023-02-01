@@ -1,0 +1,28 @@
+{
+  "name": "resource",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "webpack",
+    "watch": "webpack --watch",
+    "hot": "webpack-dev-server"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@webpack-cli/serve": "^2.0.1",
+    "babel-preset-env": "^1.7.0",
+    "css-loader": "^3.6.0",
+    "html-webpack-plugin": "^4.5.2",
+    "sass-loader": "^10.4.1",
+    "style-loader": "^0.23.1",
+    "webpack": "^4.35.2",
+    "webpack-cli": "^3.3.11",
+    "webpack-dev-server": "^3.10.1"
+  },
+  "dependencies": {
+    "node-sass": "^4.14.1"
+  }
+}
