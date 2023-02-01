@@ -2,7 +2,7 @@
   <div id="app">
     <nav>
       <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
+      <router-link to="/order">Order</router-link>
     </nav>
     <router-view/>
   </div>
@@ -28,5 +28,14 @@ nav {
       color: #42b983;
     }
   }
+}
+
+.left {
+  float: left;
+  width:40%;
+}
+.right {
+  float: right;
+  width: 40%;
 }
 </style>
