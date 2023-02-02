@@ -4,7 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon src/index.js"
+    "start": "nodemon --exec babel-node src/index.js",
+    "webpack:debug": "node --inspect-brk ./node_modules/.bin/webpack --inline --progress",
+    "build": "cross-env NODE_ENV=prod webpack --config config/webpack.config.prod.js",
+    "dev": "cross-env NODE_ENV=dev nodemon --exec babel-node --inspect ./src/index.js",
+    "clean": "rimraf dist"
   },
   "keywords": [],
   "author": "",
@@ -14,6 +18,8 @@
     "koa": "^2.14.1",
     "koa-body": "^6.0.1",
     "koa-combine-routers": "^4.0.2",
+    "koa-compose": "^4.1.0",
+    "koa-compress": "^5.1.0",
     "koa-helmet": "^6.1.0",
     "koa-json": "^2.0.2",
     "koa-router": "^12.0.0",
@@ -25,10 +31,13 @@
     "@babel/preset-env": "^7.6.3",
     "babel-loader": "^8.0.6",
     "clean-webpack-plugin": "^3.0.0",
-    "cross-env": "^6.0.3",
+    "cross-env": "^5.2.0",
     "nodemon": "^2.0.20",
+    "rimraf": "^4.1.2",
+    "terser-webpack-plugin": "^4.2.3",
     "webpack": "^4.41.2",
     "webpack-cli": "^3.3.9",
+    "webpack-merge": "^4.2.1",
     "webpack-node-externals": "^3.0.0"
   }
 }
