@@ -1,7 +1,7 @@
 import redis from 'redis'
 
 const options = {
-    host: '10.100.220.0',
+    host: '10.100.235.155',
     port: 6379,
     password: '123456',
     detect_buffers: true,
@@ -26,11 +26,16 @@ const options = {
 }
 
 const client = redis.createClient(options)
-const setValue = (key, value) => {
+const setValue = (key, value, time) => {
     if (typeof value == 'undefined' || value == null || value==='')
         return
     if (typeof value === 'string'){
-        client.set(key, value)
+        if (typeof time !== 'undefined')
+        {
+            client.set(key, value, 'EX', time)
+        }else {
+            console.set(key, value)
+        }
     }else if (typeof value === 'object') {
         Object.keys(value).forEach((item)=>{
             client.hset(key, item, value[item], redis.print)

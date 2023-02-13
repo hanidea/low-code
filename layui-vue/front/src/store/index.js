@@ -5,10 +5,14 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
+    sid: ''
   },
   getters: {
   },
   mutations: {
+    setSid (state, value) {
+      state.sid = value
+    }
   },
   actions: {
   },

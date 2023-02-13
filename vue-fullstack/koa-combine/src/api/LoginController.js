@@ -23,4 +23,8 @@ class LoginController {
     }
 }
 
+// async login (ctx) {
+
+// }
+
 export default new LoginController
