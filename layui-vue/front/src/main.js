@@ -14,7 +14,8 @@ import axios from 'axios'
 // validator.localize('zh-CN')
 
 import '@/utils/veevalidate-i18n'
-
+import Alert from './components/modules/alert'
+Vue.use(Alert)
 Vue.config.productionTip = false
 
 axios.defaults.baseURL = (process.env.NODE_ENV !== 'production') ? 'http://localhost:3000' : 'http://your.domain.com'
