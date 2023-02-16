@@ -18,4 +18,10 @@ const login = (loginInfo) => {
   })
 }
 
-export { getCode, forget, login }
+const reg = (regInfo) => {
+  return axios.post('/login/reg', {
+    ...regInfo
+  })
+}
+
+export { getCode, forget, login, reg }

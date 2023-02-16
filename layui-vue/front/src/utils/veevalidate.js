@@ -1,5 +1,5 @@
 import { extend, localize } from 'vee-validate'
-import { required, email, min, length, confirmed } from 'vee-validate/dist/rules'
+import { required, email, min, length, confirmed, max } from 'vee-validate/dist/rules'
 
 import zh from 'vee-validate/dist/locale/zh_CN.json'
 
@@ -8,6 +8,7 @@ extend('min', min)
 extend('required', required)
 extend('length', length)
 extend('confirmed', confirmed)
+extend('max', max)
 
 localize('zh_CN', {
   messages: {
@@ -17,7 +18,7 @@ localize('zh_CN', {
   names: {
     email: '邮箱',
     password: '密码',
-    name: '账号',
+    name: '昵称',
     username: '账号',
     code: '验证码'
   },

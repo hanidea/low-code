@@ -24,7 +24,7 @@
                 </div>
                 <div class="layui-form-item">
                   <label class="layui-form-label">密码</label>
-                  <validation-provider name="password" rules="required|min:6" v-slot="{errors}">
+                  <validation-provider name="password"  ref="passwordfield" rules="required|min:6" v-slot="{errors}">
                     <div class="layui-input-inline">
                       <input type="password" name="password" v-model="password" placeholder="请输入密码" autocomplete="off" class="layui-input">
                     </div>
@@ -132,6 +132,8 @@ export default {
           console.log(res)
         } else if (res.code === 401) {
           this.$refs.codefield.setErrors([res.msg])
+        } else if (res.code === 404) {
+          this.$alert('用户名密码校验失败，请检查！')
         }
       }).catch((err) => {
         const data = err.response.data
