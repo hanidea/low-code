@@ -123,12 +123,19 @@ export default {
         sid: this.$store.state.sid
       }).then((res) => {
         if (res.code === 200) {
+          // sessionStorage
+          // localStorage
+          // localStorage.setItem('userInfo', JSON.stringify(res.data))
+          this.$store.commit('setUserInfo', res.data)
+          this.$store.commit('setIsLogin', true)
+          this.$store.commit('setToken', res.token)
           this.username = ''
           this.password = ''
           this.code = ''
           requestAnimationFrame(() => {
             this.$refs.observer.reset()
           })
+          this.$router.push({ name: 'index' })
           console.log(res)
         } else if (res.code === 401) {
           this.$refs.codefield.setErrors([res.msg])

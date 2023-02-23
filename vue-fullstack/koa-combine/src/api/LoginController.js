@@ -21,7 +21,7 @@ class LoginController {
             code: 200,
             data: result,
             msg: '邮件发送成功'
-        }    
+        }
         }catch(e){
             console.log(e)
         }
@@ -40,14 +40,19 @@ class LoginController {
                 checkUserPasswd = true
             }
             if(checkUserPasswd){
-                console.log('Hello login')
-                let token = jsonwebtoken.sign({ _id: 'brian'}, 
+                const userObj = user.toJSON()
+                const arr = ['password','username','roles']
+                arr.map((item) =>{
+                    delete userObj[item]
+                })
+                let token = jsonwebtoken.sign({ _id: 'brian'},
                 config.JWT_SECRET,{
                     // exp: Math.floor(Date.now()/1000)+60*60*24
                     expiresIn: '1d'
                 })
                 ctx.body = {
                     code: 200,
+                    data: userObj,
                     token: token
                 }
             } else {
@@ -62,7 +67,7 @@ class LoginController {
                 msg: '图片验证码不正确，请检查!'
             }
         }
-        
+
     }
     async reg (ctx) {
         const { body } = ctx.request
