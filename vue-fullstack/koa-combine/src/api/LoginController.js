@@ -5,7 +5,6 @@ import jsonwebtoken from 'jsonwebtoken'
 import config from '../config'
 import { checkCode } from '../common/Utils'
 import User from '../model/User'
-import signRecord from "@/model/SignRecord";
 import SignRecord from "@/model/SignRecord";
 class LoginController {
     constructor () {}

@@ -5,6 +5,7 @@
       <ul class="layui-clear imooc-quick">
         <li class="layui-col-xs6" v-for="(item,index) in lists" :key="'tips' + index">
           <a :href="item.link" target="_blank">{{item.title}}</a>
+          1234567890
         </li>
       </ul>
     </div>

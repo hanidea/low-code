@@ -23,6 +23,7 @@ const Passwd = () => import(/* webpackChunkName: 'password' */'./components/user
 const Accounts = () => import(/* webpackChunkName: 'accounts' */'./components/user/common/Accounts.vue')
 const MyPost = () => import(/* webpackChunkName: 'mypost' */'./components/user/common/MyPost.vue')
 const MyCollection = () => import(/* webpackChunkName: 'mycollection' */'./components/user/common/MyCollection.vue')
+const NoFound = () => import(/* webpackChunkName: 'nofound' */'./views/NoFound.vue')
 Vue.use(Router)
 
 const router = new Router({
@@ -136,6 +137,14 @@ const router = new Router({
           component: Others
         }
       ]
+    },
+    {
+      path: '/404',
+      component: NoFound
+    },
+    {
+      path: '*',
+      redirect: '/404'
     }
   ]
 })

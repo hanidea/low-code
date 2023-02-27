@@ -6,7 +6,7 @@
       <a href="javascript:;" class="fly-link" id="LAY_signinHelp" @click="showInfo()">说明</a>
       <i class="fly-mid"></i>
       <a href="javascript:;" class="fly-link" id="LAY_signinTop" @click="showTop()">活跃榜<span class="layui-badge-dot"></span></a>
-      <span class="fly-signin-days">已连续签到<cite>{{count}}</cite>天</span>
+      <span class="fly-signin-days" v-show="isSign || isLogin">已连续签到<cite>{{count}}</cite>天</span>
     </div>
     <div class="fly-panel-main fly-signin-main">
       <template v-if="!isSign">
@@ -38,7 +38,6 @@ export default {
   },
   data () {
     return {
-      isLogin: this.$store.state.isLogin,
       isShow: false,
       showList: false,
       current: 0,
@@ -58,6 +57,9 @@ export default {
     }
   },
   computed: {
+    isLogin () {
+      return this.$store.state.isLogin
+    },
     favs () {
       const count = parseInt(this.count)
       let result = 0
