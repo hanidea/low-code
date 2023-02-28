@@ -1,7 +1,22 @@
 import combineRoutes from 'koa-combine-routers'
 
-import publicRouter from "./PublicRouter";
-import loginRouter from "./LoginRouter";
-import userRouter from "./UserRouter";
+import publicRouter from "./modules/PublicRouter";
+import loginRouter from "./modules/LoginRouter";
+import userRouter from "./modules/UserRouter";
 
-export default combineRoutes(publicRouter, loginRouter, userRouter)
+// 加载目录中的Router中间件
+const moduleFiles = require.context('./modules', true, /\.js$/)
+
+// reduce方法去拼接 koa-combine-router
+const modules = moduleFiles.keys().reduce((items, path) => {
+    const value = moduleFiles(path)
+    items.push(value.default)
+    return items
+}, [])
+
+export default combineRoutes(
+    modules
+    // publicRouter,
+    // loginRouter,
+    // userRouter
+)

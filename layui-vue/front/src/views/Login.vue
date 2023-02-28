@@ -126,6 +126,7 @@ export default {
           // sessionStorage
           // localStorage
           // localStorage.setItem('userInfo', JSON.stringify(res.data))
+          res.data.username = this.username
           this.$store.commit('setUserInfo', res.data)
           this.$store.commit('setIsLogin', true)
           this.$store.commit('setToken', res.token)
