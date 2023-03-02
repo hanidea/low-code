@@ -2,6 +2,11 @@ import SignRecord from '@/model/SignRecord'
 import { getJWTPayload } from '../common/Utils'
 import User from '../model/User'
 import moment from 'dayjs'
+import send from '@/config/MailConfig'
+import config from '@/config'
+import { v4 as uuidv4 } from 'uuid'
+import jwt from "jsonwebtoken";
+import {setValue} from "@/config/RedisConfig";
 
 class UserController {
     // 用户签到接口
@@ -113,6 +118,50 @@ class UserController {
             msg: '请求成功',
             ...result,
             lastSign: newRecord.created
+        }
+    }
+    // 更新用户基本信息接口
+    async updateUserInfo (ctx) {
+        const { body } = ctx.request
+        const obj = await getJWTPayload(ctx.header.authorization)
+        // 判断用户是否修改了邮箱
+        const user = await User.findOne({_id: obj._id})
+        if (body.username && body.username !== user.username){
+            // 用户修改了邮箱
+            const key = uuidv4()
+            setValue(key, jwt.sign({ _id: obj._id },
+                config.JWT_SECRET,{
+                expiresIn: '30m'
+            }))
+            const result = await send({
+                type: 'email',
+                key: key,
+                code: '',
+                expire: moment().add(30, 'minutes').format('YYYY-MM-DD HH:mm:ss'),
+                email: user.username,
+                user: user.name
+            })
+            ctx.body = {
+                code: 500,
+                data: result,
+                msg: '发送验证邮件成功，请点击链接确认修改邮件账号！'
+            }
+        } else {
+            const arr = ['username', 'mobile', 'password']
+            arr.map((item) => {delete body[item]})
+            const result = await User.updateOne({_id: obj._id}, body)
+            console.log('result',result)
+            if (result.acknowledged === true){
+                ctx.body = {
+                    code: 200,
+                    msg: '更新成功'
+                }
+            } else {
+                ctx.body = {
+                    code: 500,
+                    msg: '更新失败'
+                }
+            }
         }
     }
 }
