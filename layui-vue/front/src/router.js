@@ -24,6 +24,8 @@ const Accounts = () => import(/* webpackChunkName: 'accounts' */'./components/us
 const MyPost = () => import(/* webpackChunkName: 'mypost' */'./components/user/common/MyPost.vue')
 const MyCollection = () => import(/* webpackChunkName: 'mycollection' */'./components/user/common/MyCollection.vue')
 const NoFound = () => import(/* webpackChunkName: 'nofound' */'./views/NoFound.vue')
+const Confirm = () => import(/* webpackChunkName: 'confirm' */'./views/Confirm.vue')
+const Reset = () => import(/* webpackChunkName: 'reset' */'./views/Reset.vue')
 Vue.use(Router)
 
 const router = new Router({
@@ -50,6 +52,16 @@ const router = new Router({
       path: '/login',
       name: 'login',
       component: Login
+    },
+    {
+      path: '/confirm',
+      name: 'confirm',
+      component: Confirm
+    },
+    {
+      path: '/reset',
+      name: 'reset',
+      component: Reset
     },
     {
       path: '/reg',
