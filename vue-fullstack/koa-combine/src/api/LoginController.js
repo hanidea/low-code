@@ -2,27 +2,52 @@ import send from '../config/MailConfig'
 import bcrypt from 'bcrypt'
 import moment from 'moment'
 import jsonwebtoken from 'jsonwebtoken'
-import config from '../config'
+import config from '@/config'
 import { checkCode } from '../common/Utils'
 import User from '../model/User'
 import SignRecord from "@/model/SignRecord";
+import { getValue, setValue } from '@/config/RedisConfig'
+import { getJWTPayload } from '../common/Utils'
+import { v4 as uuidv4 } from 'uuid'
 class LoginController {
-    constructor () {}
-    async forget(ctx) {
+    async forget (ctx) {
         const { body } = ctx.request
-        try{
-         let result = await send({
-            code: '1234',
-            expire: moment().add(30, 'minutes').format('YYYY-MM-DD HH:mm:ss'),
-            email: body.username,
-            user: 'junjie'
-         })
-        ctx.body = {
-            code: 200,
-            data: result,
-            msg: '邮件发送成功'
+        const user = await User.findOne({ username: body.username })
+        if (!user) {
+            ctx.body = {
+                code: 404,
+                msg: '请检查账号！'
+            }
+            return
         }
-        }catch(e){
+        try {
+            const key = uuidv4()
+            setValue(
+                key,
+                jsonwebtoken.sign({ _id: user._id }, config.JWT_SECRET, {
+                    expiresIn: '30m'
+                }),
+                30 * 60
+            )
+            // body.username -> database -> email
+            const result = await send({
+                type: 'reset',
+                data: {
+                    key: key,
+                    username: body.username
+                },
+                expire: moment()
+                    .add(30, 'minutes')
+                    .format('YYYY-MM-DD HH:mm:ss'),
+                email: body.username,
+                user: user.name ? user.name : body.username
+            })
+            ctx.body = {
+                code: 200,
+                data: result,
+                msg: '邮件发送成功'
+            }
+        } catch (e) {
             console.log(e)
         }
     }
@@ -120,6 +145,50 @@ class LoginController {
         ctx.body = {
             code: 500,
             msg: msg
+        }
+    }
+    // 密码重置
+    async reset (ctx) {
+        const { body } = ctx.request
+        const sid = body.sid
+        const code = body.code
+        let msg = {}
+        // 验证图片验证码的时效性、正确性
+        const result = await checkCode(sid, code)
+        if (!body.key) {
+            ctx.body = {
+                code: 500,
+                msg: '请求参数异常，请重新获取链接'
+            }
+            return
+        }
+        if (!result) {
+            msg.code = ['验证码已经失效，请重新获取！']
+            ctx.body = {
+                code: 500,
+                msg: msg
+            }
+            return
+        }
+        const token = await getValue(body.key)
+        if (token) {
+            const obj = getJWTPayload('Bearer ' + token)
+            body.password = await bcrypt.hash(body.password, 5)
+            await User.updateOne(
+                { _id: obj._id },
+                {
+                    password: body.password
+                }
+            )
+            ctx.body = {
+                code: 200,
+                msg: '更新用户密码成功！'
+            }
+        } else {
+            ctx.body = {
+                code: 500,
+                msg: '链接已经失效'
+            }
         }
     }
 }

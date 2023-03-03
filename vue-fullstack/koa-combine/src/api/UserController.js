@@ -7,7 +7,6 @@ import config from '@/config'
 import { v4 as uuidv4 } from 'uuid'
 import jwt from "jsonwebtoken";
 import {setValue, getValue} from "@/config/RedisConfig";
-
 class UserController {
     // 用户签到接口
     async userSign (ctx) {

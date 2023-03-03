@@ -2,11 +2,16 @@ import Post from '../model/Post'
 import Links from '../model/Links'
 import moment from 'dayjs'
 import config from '@/config'
+import mkdir from 'make-dir'
+import fs from 'fs'
 import { checkCode, getJWTPayload } from '@/common/Utils'
 import User from '@/model/User'
 import PostTags from '@/model/PostTags'
 import UserCollect from '../model/UserCollect'
 import qs from 'qs'
+import { v4 as uuidv4 } from 'uuid'
+import { dirExists } from "@/common/Utils"
+
 
 class ContentController {
     // 获取文章列表
@@ -71,6 +76,48 @@ class ContentController {
         ctx.body = {
             code: 200,
             data: result
+        }
+    }
+    // 上传图片接口
+    async uploadImg (ctx) {
+        const file = ctx.request.files.file
+        console.log(file)
+        // 图片名称，图片格式，存储的位置，返回可以读取的路径
+        const ext = file.originalFilename.split('.').pop()
+        const dir = `${config.uploadPath}/${moment().format('YYYYMMDD')}`
+        // 判断路径是否存在，不存在则创建
+        // await dirExists(dir)
+        await mkdir(dir)
+        const picname = uuidv4()
+        const destPath = `${dir}/${picname}.${ext}`
+        const reader = fs.createReadStream(file.filepath)
+        const upStream = fs.createWriteStream(destPath)
+        const filePath = `/${moment().format('YYYYMMDD')}/${picname}.${ext}`
+        // method
+        reader.pipe(upStream)
+        // method 2
+        // const stat = fs.statSync(file.filepath)
+        // console.log('size', stat.size)
+        // let totalLength = 0
+        // reader.on('data', (chunk) =>{
+        //     totalLength += chunk.length
+        //     if (upStream.write(chunk) === false) {
+        //         reader.pause()
+        //     }
+        // })
+        //
+        // reader.on('drain', () => {
+        //     reader.resume()
+        // })
+        //
+        // reader.on('end', () => {
+        //     upStream.end()
+        // })
+
+        ctx.body = {
+            code: 200,
+            msg: '图片上传成功',
+            data: filePath
         }
     }
 }

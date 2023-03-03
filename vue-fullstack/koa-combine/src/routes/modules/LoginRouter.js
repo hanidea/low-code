@@ -7,5 +7,7 @@ router.prefix('/login')
 router.post('/forget', LoginController.forget)
 router.post('/login', LoginController.login)
 router.post('/reg', LoginController.reg)
+// 密码重置
+router.post('/reset', LoginController.reset)
 
 export default router
