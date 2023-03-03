@@ -15,9 +15,9 @@ class HttpRequest {
   getInsideConfig () {
     const config = {
       baseURL: this.baseUrl,
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded'
-      },
+      // headers: {
+      //   'Content-Type': 'application/json;charset=utf-8'
+      // },
       timeout: 10000
     }
     return config

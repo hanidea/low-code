@@ -18,6 +18,8 @@ localize('zh_CN', {
   names: {
     email: '邮箱',
     password: '密码',
+    repassword: '确认密码',
+    oldpassword: '旧密码',
     name: '昵称',
     username: '账号',
     code: '验证码'

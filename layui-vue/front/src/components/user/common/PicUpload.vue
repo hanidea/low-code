@@ -38,8 +38,8 @@ export default {
         this.formData = formData
       }
       // 上传图片的只有 uploadImg
-      uploadImg(this.formData).then((res) => {
-        console.log('resww', res)
+      uploadImg(formData).then((res) => {
+        console.log('res', res)
         if (res.code === 200) {
           const baseUrl = process.env.NODE_ENV === 'production'
             ? config.baseUrl.pro

@@ -13,7 +13,7 @@ import axios from 'axios'
 // const validator = new Validator()
 // validator.localize('zh-CN')
 
-import '@/utils/veevalidate-i18n'
+import '@/utils/veevalidate'
 import Alert from './components/modules/alert'
 import Pop from './components/modules/pop'
 Vue.use(Alert)
