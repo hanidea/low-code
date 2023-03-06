@@ -120,6 +120,44 @@ class ContentController {
             data: filePath
         }
     }
+
+// 添加新贴
+    async addPost (ctx) {
+        const { body } = ctx.request
+        const sid = body.sid
+        const code = body.code
+        // 验证图片验证码的时效性、正确性
+        const result = await checkCode(sid, code)
+        if (result) {
+            const obj = await getJWTPayload(ctx.header.authorization)
+            // 判断用户的积分数是否 > fav，否则，提示用户积分不足发贴
+            // 用户积分足够的时候，新建Post，减除用户对应的积分
+            const user = await User.findByID({ _id: obj._id })
+            if (user.favs < body.fav) {
+                ctx.body = {
+                    code: 501,
+                    msg: '积分不足'
+                }
+                return
+            } else {
+                await User.updateOne({ _id: obj._id }, { $inc: { favs: -body.fav } })
+            }
+            const newPost = new Post(body)
+            newPost.uid = obj._id
+            const result = await newPost.save()
+            ctx.body = {
+                code: 200,
+                msg: '成功的保存的文章',
+                data: result
+            }
+        } else {
+            // 图片验证码验证失败
+            ctx.body = {
+                code: 500,
+                msg: '图片验证码验证失败'
+            }
+        }
+    }
 }
 
 export default new ContentController()
