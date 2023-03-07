@@ -1,5 +1,6 @@
 import axios from '@/utils/request'
 import qs from 'qs'
+import store from '@/store'
 
 // const getList = (options) => {
 //   return axios.get('/public/list', {
@@ -32,11 +33,26 @@ const uploadImg = (formData) => axios.post('/content/upload', formData)
 // 发贴接口
 const addPost = (data) => axios.post('/content/add', { ...data })
 
+// 获取文章详情
+const getDetail = (tid) => {
+  const token = store.state.token
+  let headers = {}
+  if (token !== '') {
+    headers = {
+      headers: {
+        Authorization: 'Bearer ' + store.state.token
+      }
+    }
+  }
+  return axios.get('/public/content/detail?tid=' + tid, headers)
+}
+
 export {
   getList,
   getTips,
   getLinks,
   getTop,
   uploadImg,
-  addPost
+  addPost,
+  getDetail
 }
