@@ -1,5 +1,6 @@
 import mongoose from '../config/DBHelpier'
 import moment from 'dayjs'
+import PostModel from "@/model/Post";
 
 const Schema = mongoose.Schema
 
@@ -15,8 +16,9 @@ const CommentsSchema = new Schema({
     isBest: { type: String, default: '0' }
 }, { toJSON: { virtuals: true } })
 
-CommentsSchema.pre('save', function (next) {
+CommentsSchema.pre('save', function (next)  {
     this.created = new Date()
+    // this.created = moment().format('YYYY-MM-DD HH:mm:ss')
     next()
 })
 
@@ -333,6 +335,6 @@ CommentsSchema.statics = {
     }
 }
 
-const Comments = mongoose.model('comments', CommentsSchema)
+const CommentsModel = mongoose.model('comments', CommentsSchema)
 
-export default Comments
+export default CommentsModel

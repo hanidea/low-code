@@ -16,6 +16,10 @@ const getComents = (params) => {
   return axios.get('/public/comments?' + qs.stringify(params), headers)
 }
 
+// 添加评论
+const addComment = (data) => axios.post('/comments/reply', { ...data })
+
 export {
-  getComents
+  getComents,
+  addComment
 }

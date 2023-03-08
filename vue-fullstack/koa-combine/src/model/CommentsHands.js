@@ -2,19 +2,19 @@ import mongoose from '../config/DBHelpier'
 
 const Schema = mongoose.Schema
 
-const CommentsSchema = new Schema({
+const CommentsHandsSchema = new Schema({
     // 'cid': { type: String},
     cid: { type: String, ref: 'comments' },
     uid: { type: String, ref: 'users' },
     created: { type: Date }
 })
 
-CommentsSchema.pre('save', function (next) {
+CommentsHandsSchema.pre('save', function (next) {
     this.created = new Date()
     next()
 })
 
-CommentsSchema.post('save', function (error, doc, next) {
+CommentsHandsSchema.post('save', function (error, doc, next) {
     if (error.name === 'MongoError' && error.code === 11000) {
         next(new Error('There was a duplicate key error'))
     } else {
@@ -22,7 +22,7 @@ CommentsSchema.post('save', function (error, doc, next) {
     }
 })
 
-CommentsSchema.statics = {
+CommentsHandsSchema.statics = {
     findByCid: function (id) {
         return this.find({ cid: id })
     },
@@ -42,6 +42,6 @@ CommentsSchema.statics = {
     }
 }
 
-const CommentsHands = mongoose.model('comments_hands', CommentsSchema)
+const CommentsHands = mongoose.model('comments_hands', CommentsHandsSchema)
 
 export default CommentsHands

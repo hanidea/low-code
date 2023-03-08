@@ -81,7 +81,6 @@
             <a href class="layui-btn layui-btn-sm jie-admin jie-admin-collect">收藏</a>
           </div>
           <div class="detail-body photos" v-html="content">
-            帖子内容区域
           </div>
         </div>
 
@@ -147,7 +146,8 @@
           <imooc-page :showType="'icon'" :hasSelect="true" :total="total" :size="size" :current="current" @changeCurrent="handleChange"></imooc-page>
           <div class="layui-form layui-form-pane">
             <form>
-              <imooc-edit></imooc-edit>
+              <validation-observer ref="observer" v-slot="{ validate }">
+              <imooc-edit @changeContent="addContent"></imooc-edit>
               <div class="layui-form-item">
                 <validation-provider name="code" ref="codefield" rules="required|length:4" v-slot="{errors}">
                   <div class="layui-row">
@@ -165,8 +165,9 @@
                 </validation-provider>
               </div>
               <div class="layui-form-item">
-                <button class="layui-btn" type="button">提交回复</button>
+                <button class="layui-btn" type="button" @click="validate().then(submit)">提交回复</button>
               </div>
+              </validation-observer>
             </form>
           </div>
         </div>
@@ -189,7 +190,7 @@ import Editor from '../modules/editor/Index'
 import CodeMix from '@/mixin/code'
 import Pagination from '@/components/modules/pagination/Index'
 import { getDetail } from '@/api/content'
-import { getComents } from '@/api/comments'
+import { getComents, addComment } from '@/api/comments'
 import { escapeHtml } from '@/utils/escapeHtml'
 export default {
   name: 'Detail',
@@ -205,11 +206,16 @@ export default {
   },
   data () {
     return {
-      total: 101,
+      total: 0,
       size: 10,
-      current: 6,
+      current: 0,
       page: {},
-      comments: []
+      comments: [],
+      editInfo: {
+        content: '',
+        code: '',
+        sid: ''
+      }
     }
   },
   mounted () {
@@ -234,6 +240,9 @@ export default {
         }
       })
     },
+    addContent (val) {
+      this.editInfo.content = val
+    },
     getCommentsList () {
       getComents({
         tid: this.tid,
@@ -243,6 +252,55 @@ export default {
         if (res.code === 200) {
           this.comments = res.data
           this.total = res.total
+        }
+      })
+    },
+    async submit () {
+      const isValid = await this.$refs.observer.validate()
+      if (!isValid) {
+        // ABORT!!
+        return
+      }
+      // 用户未登录
+      const isLogin = this.$store.state.isLogin
+      if (!isLogin) {
+        this.$pop('shake', '请先登录')
+        return
+      }
+      // 用户禁言状态判断
+      const user = this.$store.state.userInfo
+      if (user.status !== '0') {
+        this.$pop('shake', '用户已经禁言，请联系管理员')
+        return
+      }
+      this.editInfo.code = this.code
+      this.editInfo.sid = this.$store.state.sid
+      this.editInfo.tid = this.tid
+
+      // 获取评论用户的信息：图片、昵称、vip
+      // const cuid = {
+      //   _id: user._id,
+      //   pic: user.pic,
+      //   name: user.name,
+      //   isVip: user.isVip
+      // }
+      // 添加评论
+      addComment(this.editInfo).then((res) => {
+        if (res.code === 200) {
+          this.$pop('', '发表评论成功')
+          // 发表评论成功后，清空回复内容
+          // this.code = ''
+          // this.editInfo.content = ''
+          // 添加新的评论到评论列表
+          // res.data.cuid = cuid
+          // this.comments.push(res.data)
+          // requestAnimationFrame(() => {
+          //   this.$refs.observer && this.$refs.observer.reset()
+          // })
+          // 刷新图形验证码
+          // this._getCode()
+        } else {
+          this.$alert(res.msg)
         }
       })
     }
