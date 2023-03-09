@@ -12,10 +12,15 @@ const baseUrl = process.env.NODE_ENV === 'production' ? 'http://www.51hanhan.com
 
 const uploadPath = process.env.NODE_ENV === 'production' ? '/app/public' : path.join(path.resolve(__dirname),'../../public')
 
+const port = 3000
+const wsPort = 3001
+
 export default {
     DB_URL,
     // REDIS,
     JWT_SECRET,
     baseUrl,
-    uploadPath
+    uploadPath,
+    port,
+    wsPort
 }

@@ -12,4 +12,7 @@ router.post('/basic', userController.updateUserInfo)
 // 修改密码
 router.post('/change-password', userController.changePasswd)
 
+// 获取历史消息
+router.get('/getmsg', userController.getMsg)
+
 export default router

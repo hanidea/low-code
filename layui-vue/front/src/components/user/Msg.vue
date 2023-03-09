@@ -18,14 +18,57 @@
             <p><span>1小时前</span><a href="javascript:;" class="layui-btn layui-btn-small layui-btn-danger fly-delete">删除</a></p>
           </li>
         </ul>
+        <imooc-page
+          v-show="total > 0"
+          :total="total"
+          :current="page"
+          :align="'left'"
+          :hasTotal="true"
+          :hasSelect="true"
+          @changeCurrent="handleChange"
+        ></imooc-page>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import Pagination from '@/components/modules/pagination/Index'
+import { getMsg } from '@/api/user'
 export default {
-  name: 'user-msg'
+  name: 'user-msg',
+  components: {
+    'imooc-page': Pagination
+  },
+  data () {
+    return {
+      lists: [],
+      page: 0,
+      limit: 10,
+      total: 0,
+      ws: {}
+    }
+  },
+  mounted () {
+    this.getMsgAll()
+  },
+  methods: {
+    getMsgAll () {
+      getMsg({
+        page: this.page,
+        limit: this.limit
+      }).then((res) => {
+        console.log('res', res)
+        if (res.code === 200) {
+          this.lists = res.data
+        }
+      })
+    },
+    handleChange (val) {
+      this.page = val
+      this.getMsgAll()
+    }
+  }
 }
 </script>
 

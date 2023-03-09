@@ -8,6 +8,7 @@ import { v4 as uuidv4 } from 'uuid'
 import jwt from "jsonwebtoken";
 import {setValue, getValue} from "@/config/RedisConfig";
 import bcrypt from "bcrypt";
+import Comments from "@/model/Comments";
 class UserController {
     // 用户签到接口
     async userSign (ctx) {
@@ -207,6 +208,25 @@ class UserController {
                 code: 500,
                 msg: '更新密码错，请检查'
             }
+        }
+    }
+
+    // 获取历史消息
+    // 记录评论之后，给作者发送消息
+    async getMsg (ctx) {
+        const params = ctx.query
+        const page = params.page ? params.page : 0
+        const limit = params.limit ? parseInt(params.limit) : 0
+        // 方法一： 嵌套查询 -> aggregate
+        // 方法二： 通过冗余换时间
+        const obj = await getJWTPayload(ctx.header.authorization)
+        const num = await Comments.getTotal(obj._id)
+        const result = await Comments.getMsgList(obj._id, page, limit)
+
+        ctx.body = {
+            code: 200,
+            data: result,
+            total: num
         }
     }
 }

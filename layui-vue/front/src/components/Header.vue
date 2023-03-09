@@ -52,6 +52,15 @@
             <dd><a href="javascript: void(0)" style="text-align: center;" @click="logout()">退出</a></dd>
           </dl>
         </li>
+          <div class="fly-nav-msg">12</div>
+          <transition name="fade">
+            <div class="layui-layer-tips" v-show="hasMsg">
+              <div class="layui-layer-content">
+                您有条2未读消息
+                <i class="layui-layer-TipsG layui-layer-TipsB"></i>
+              </div>
+            </div>
+          </transition>
         </template>
       </ul>
     </div>
@@ -66,7 +75,8 @@ export default {
   data () {
     return {
       isHover: false,
-      hoverCtrl: {}
+      hoverCtrl: {},
+      hasMsg: false
     }
   },
   methods: {
@@ -108,6 +118,17 @@ export default {
 }
 </script>
 
-<style scoped>
-
+<style lang="scss" scoped>
+.fly-logo {
+  left: -15px;
+  top: -10px;
+  margin-left: 15px;
+}
+.layui-layer-tips {
+  position: absolute;
+  white-space: nowrap;
+  right: 0;
+  top: 60px;
+  z-index: 2000;
+}
 </style>

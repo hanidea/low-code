@@ -15,9 +15,13 @@ const changePasswd = (data) => axios.post('/user/change-password', {
   ...data
 })
 
+// 获取用户未读消息
+const getMsg = (data) => axios.get('/user/getmsg?' + qs.stringify(data))
+
 export {
   userSign,
   updateUserInfo,
   updateUsername,
-  changePasswd
+  changePasswd,
+  getMsg
 }

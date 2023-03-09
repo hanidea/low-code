@@ -11,8 +11,14 @@ import compose from 'koa-compose'
 import compress from 'koa-compress'
 import config from './config/index'
 import errorHandle from './common/ErrorHandle'
+import WebSocketServer from './config/WebSocket'
 
 const app = new koa()
+
+const ws = new WebSocketServer()
+
+ws.init()
+global.ws = ws
 
 const isDevMode = (process.env.NODE_ENV === 'production' ? false : true)
 
