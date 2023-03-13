@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import WebSocketClient from '@/utils/websocket'
+import WebSocketClient from '../utils/websocket'
 
 Vue.use(Vuex)
 

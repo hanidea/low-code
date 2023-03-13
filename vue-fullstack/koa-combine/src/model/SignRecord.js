@@ -1,4 +1,4 @@
-import mongoose from '../config/DBHelpier'
+import mongoose from '../config/DBHelpler'
 import moment from 'dayjs'
 
 const Schema = mongoose.Schema

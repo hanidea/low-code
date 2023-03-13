@@ -27,23 +27,23 @@ class CommentsController {
         const limit = params.limit ? parseInt(params.limit) : 10
         let result = await Comments.getCommentsList(tid, page, limit)
         // 判断用户是否登录，已登录的用户才去判断点赞信息
-        // let obj = {}
-        // if (typeof ctx.header.authorization !== 'undefined') {
-        //     obj = await getJWTPayload(ctx.header.authorization)
-        // }
-        // if (typeof obj._id !== 'undefined') {
-        //     result = result.map(item => item.toJSON())
-        //     for (let i = 0; i < result.length; i++) {
-        //         let item = result[i]
-        //         item.handed = '0'
-        //         const commentsHands = await CommentsHands.findOne({ cid: item._id, uid: obj._id })
-        //         if (commentsHands && commentsHands.cid) {
-        //             if (commentsHands.uid === obj._id) {
-        //                 item.handed = '1'
-        //             }
-        //         }
-        //     }
-        // }
+        let obj = {}
+        if (typeof ctx.header.authorization !== 'undefined') {
+            obj = await getJWTPayload(ctx.header.authorization)
+        }
+        if (typeof obj._id !== 'undefined') {
+            result = result.map(item => item.toJSON())
+            for (let i = 0; i < result.length; i++) {
+                let item = result[i]
+                item.handed = '0'
+                const commentsHands = await CommentsHands.findOne({ cid: item._id, uid: obj._id })
+                if (commentsHands && commentsHands.cid) {
+                    if (commentsHands.uid === obj._id) {
+                        item.handed = '1'
+                    }
+                }
+            }
+        }
         const total = await Comments.queryCount(tid)
         ctx.body = {
             code: 200,
@@ -73,14 +73,14 @@ class CommentsController {
 
     // 添加评论
     async addComment (ctx) {
-        // const check = await canReply(ctx)
-        // if (!check) {
-        //     ctx.body = {
-        //         code: 500,
-        //         msg: '用户已被禁言！'
-        //     }
-        //     return
-        // }
+        const check = await canReply(ctx)
+        if (!check) {
+            ctx.body = {
+                code: 500,
+                msg: '用户已被禁言！'
+            }
+            return
+        }
         const { body } = ctx.request
         const sid = body.sid
         const code = body.code
@@ -96,17 +96,18 @@ class CommentsController {
         const newComment = new Comments(body)
         const obj = await getJWTPayload(ctx.header.authorization)
         newComment.cuid = obj._id
+        console.log(newComment)
         // 查询帖子的作者，以便发送消息
-        const post = await Post.findOne({ _id: body.tid })
-        newComment.uid = post.uid
+        // const post = await Post.findOne({ _id: body.tid })
+        // newComment.uid = post.uid
         const comment = await newComment.save()
         // const num = await Comments.getTotal(post.uid)
-        global.ws.send(post.uid, JSON.stringify({
-            event: 'message',
-            message: num
-        }))
+        // global.ws.send(post.uid, JSON.stringify({
+        //     event: 'message',
+        //     message: num
+        // }))
         // 评论记数
-       const updatePostresult = await Post.updateOne({ _id: body.tid }, { $inc: { answer: 1 } })
+        // const updatePostresult = await Post.updateOne({ _id: body.tid }, { $inc: { answer: 1 } })
         ctx.body = {
                 code: 200,
                 data: comment,
@@ -152,7 +153,7 @@ class CommentsController {
                 }
             })
             const result1 = await Comments.updateOne({ _id: params.cid }, { $set: { isBest: '1' } })
-            if (result.ok === 1 && result1.ok === 1) {
+            if (result.acknowledged === true && result1.acknowledged === true) {
                 // 把积分值给采纳的用户
                 const comment = await Comments.findByCid(params.cid)
                 const result2 = await User.updateOne({ _id: comment.cuid }, { $inc: { favs: parseInt(post.fav) } })
@@ -203,7 +204,7 @@ class CommentsController {
         const data = await newHands.save()
         // 更新comments表中对应的记录的hands信息 +1
         const result = await Comments.updateOne({ _id: params.cid }, { $inc: { hands: 1 } })
-        if (result.ok === 1) {
+        if (result.acknowledged === true) {
             ctx.body = {
                 code: 200,
                 msg: '点赞成功',

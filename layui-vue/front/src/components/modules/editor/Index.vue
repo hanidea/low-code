@@ -58,6 +58,7 @@ import CodeInput from './Code'
 import Preview from './Preview'
 export default {
   name: 'Editor',
+  props: ['initContent'],
   components: {
     Face,
     ImgUpload,
@@ -73,6 +74,11 @@ export default {
       codeHeight: 200,
       content: '',
       pos: ''
+    }
+  },
+  watch: {
+    initContent (newval, oldval) {
+      this.content = newval
     }
   },
   updated () {

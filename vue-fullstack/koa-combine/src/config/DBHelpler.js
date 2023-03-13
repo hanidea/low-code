@@ -1,6 +1,8 @@
 import mongoose from 'mongoose'
 import config from './index'
+
 mongoose.set('strictQuery', true);
+
 mongoose.connect(config.DB_URL, {
     useNewUrlParser: true,
     useUnifiedTopology: true
