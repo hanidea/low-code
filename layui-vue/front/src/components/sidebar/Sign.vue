@@ -104,6 +104,38 @@ export default {
     }
   },
   methods: {
+    nextSign () {
+      clearInterval(this.ctrl)
+      const newDate = moment().add(1, 'day').format('YYYY-MM-DD')
+      let seconds = moment(newDate + ' 00:00:00').diff(moment(), 'second')
+      // 测试用
+      // const newDate = moment().add(10, 'second')
+      // let seconds = moment(newDate).diff(moment(), 'second')
+      let hour = Math.floor(seconds / 3600)
+      let min = Math.floor(seconds % 3600 / 60)
+      let second = seconds % 60
+      this.msg = `签到倒计时 ${hour}:${min < 10 ? '0' + min : min}:${second < 10 ? '0' + second : second}`
+      // if (seconds < 600) {
+      this.ctrl = setInterval(() => {
+        seconds = moment(newDate + ' 00:00:00').diff(moment(), 'second')
+        // 测试用
+        // seconds = moment(newDate).diff(moment(), 'second')
+        hour = Math.floor(seconds / 3600)
+        min = Math.floor(seconds % 3600 / 60)
+        second = seconds % 60
+        this.msg = `签到倒计时 ${hour}:${min < 10 ? '0' + min : min}:${second < 10 ? '0' + second : second}`
+        if (seconds <= 0) {
+          clearInterval(this.ctrl)
+          this.isSign = false
+          const user = this.$store.state.userInfo
+          user.isSign = false
+          this.$store.commit('setUserInfo', user)
+        }
+      }, 1000)
+      // } else {
+      //   this.msg = '今日已签到'
+      // }
+    },
     showInfo () {
       this.isShow = true
     },

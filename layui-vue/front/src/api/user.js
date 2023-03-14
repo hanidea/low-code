@@ -18,6 +18,9 @@ const changePasswd = (data) => axios.post('/user/change-password', {
 // 获取用户未读消息
 const getMsg = (data) => axios.get('/user/getmsg?' + qs.stringify(data))
 
+// 设置用户未读消息
+const setMsg = (data) => axios.get('/user/setmsg?' + qs.stringify(data))
+
 // 设置收藏 & 取消收藏
 const addCollect = (data) => axios.get('/user/setCollect?' + qs.stringify(data))
 
@@ -43,5 +46,6 @@ export {
   getCollect,
   getPostListByUid,
   deletePostByUid,
-  getInfo
+  getInfo,
+  setMsg
 }

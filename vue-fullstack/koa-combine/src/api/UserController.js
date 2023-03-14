@@ -231,6 +231,33 @@ class UserController {
         }
     }
 
+    // 设置已读消息
+    async setMsg (ctx) {
+        const params = ctx.query
+        if (params.id) {
+            const result = await Comments.updateOne(
+                { _id: params.id },
+                { isRead: '1' }
+            )
+            if (result.acknowledged === true) {
+                ctx.body = {
+                    code: 200
+                }
+            }
+        } else {
+            const obj = await getJWTPayload(ctx.header.authorization)
+            const result = await Comments.updateMany(
+                { uid: obj._id },
+                { isRead: '1' }
+            )
+            if (result.acknowledged === true) {
+                ctx.body = {
+                    code: 200
+                }
+            }
+        }
+    }
+
     // 设置收藏
     async setCollect (ctx) {
         const params = ctx.query

@@ -16,6 +16,9 @@ router.post('/change-password', userController.changePasswd)
 // 获取历史消息
 router.get('/getmsg', userController.getMsg)
 
+// 设置消息状态
+router.get('/setmsg', userController.setMsg)
+
 // 取消 设置收藏
 router.get('/setCollect', userController.setCollect)
 

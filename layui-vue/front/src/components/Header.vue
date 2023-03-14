@@ -52,11 +52,11 @@
             <dd><a href="javascript: void(0)" style="text-align: center;" @click="logout()">退出</a></dd>
           </dl>
         </li>
-          <div class="fly-nav-msg">12</div>
+          <div class="fly-nav-msg" v-show="num.message && num.message !== 0">{{num.message}}</div>
           <transition name="fade">
             <div class="layui-layer-tips" v-show="hasMsg">
               <div class="layui-layer-content">
-                您有条2未读消息
+                您有条{{num.message}}未读消息
                 <i class="layui-layer-TipsG layui-layer-TipsB"></i>
               </div>
             </div>
@@ -69,7 +69,7 @@
 </template>
 
 <script>
-
+import { mapState } from 'vuex'
 export default {
   name: 'headerView',
   data () {
@@ -103,7 +103,20 @@ export default {
       }, () => { })
     }
   },
+  watch: {
+    num (newval, oldval) {
+      if (newval.event && newval !== oldval) {
+        this.hasMsg = true
+        setTimeout(() => {
+          this.hasMsg = false
+        }, 2000)
+      }
+    }
+  },
   computed: {
+    ...mapState({
+      num: state => state.num
+    }),
     isShow () {
       return this.$store.state.isLogin
     },

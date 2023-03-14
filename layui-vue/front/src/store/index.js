@@ -11,7 +11,8 @@ export default new Vuex.Store({
     token: '',
     userInfo: {},
     inHide: false,
-    ws: null
+    ws: null,
+    num: 0
   },
   getters: {
   },
@@ -36,7 +37,7 @@ export default new Vuex.Store({
       state.isLogin = value
     },
     setMessage (state, value) {
-      console.log(value)
+      state.num = value
     }
   },
   actions: {
