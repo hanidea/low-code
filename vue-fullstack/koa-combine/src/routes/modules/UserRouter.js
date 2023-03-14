@@ -1,5 +1,6 @@
 import Router from 'koa-router'
 import userController from "@/api/UserController";
+import contentController from "@/api/ContentController";
 
 const router = new Router()
 
@@ -14,5 +15,17 @@ router.post('/change-password', userController.changePasswd)
 
 // 获取历史消息
 router.get('/getmsg', userController.getMsg)
+
+// 取消 设置收藏
+router.get('/setCollect', userController.setCollect)
+
+// 获取收藏列表
+router.get('/collect', userController.getCollectByUid)
+
+// 获取用户发贴记录
+router.get('/post', contentController.getPostByUid)
+
+// 删除发贴记录
+router.get('/deletePost', contentController.deletePostByUid)
 
 export default router

@@ -158,6 +158,50 @@ class ContentController {
             }
         }
     }
+
+    // 更新帖子
+    async updatePost (ctx) {
+        const { body } = ctx.request
+        const sid = body.sid
+        const code = body.code
+        // 验证图片验证码的时效性、正确性
+        const result = await checkCode(sid, code)
+        if (result) {
+            const obj = await getJWTPayload(ctx.header.authorization)
+            // 判断帖子作者是否为本人
+            const post = await Post.findOne({ _id: body.tid })
+            // 判断帖子是否结贴
+            if (post.uid === obj._id && post.isEnd === '0') {
+                const result = await Post.updateOne({ _id: body.tid }, body)
+                if (result.acknowledged === true) {
+                    ctx.body = {
+                        code: 200,
+                        data: result,
+                        msg: '更新帖子成功'
+                    }
+                } else {
+                    ctx.body = {
+                        code: 500,
+                        data: result,
+                        msg: '编辑帖子，更新失败'
+                    }
+                }
+            } else {
+                ctx.body = {
+                    code: 401,
+                    msg: '没有操作的权限'
+                }
+            }
+        } else {
+            // 图片验证码验证失败
+            ctx.body = {
+                code: 500,
+                msg: '图片验证码验证失败'
+            }
+        }
+    }
+
+
     // 获取文章详情
     async getPostDetail (ctx) {
         const params = ctx.query
@@ -215,6 +259,75 @@ class ContentController {
         // const post = await Post.findOne({ _id: params.tid })
         // const result = rename(post.toJSON(), 'uid', 'user')
     }
+
+    // 获取用户发贴记录
+    async getPostByUid (ctx) {
+        const params = ctx.query
+        const obj = await getJWTPayload(ctx.header.authorization)
+        const result = await Post.getListByUid(
+            obj._id,
+            params.page,
+            params.limit ? parseInt(params.limit) : 10
+        )
+        const total = await Post.countByUid(obj._id)
+        if (result.length > 0) {
+            ctx.body = {
+                code: 200,
+                data: result,
+                total,
+                msg: '查询列表成功'
+            }
+        } else {
+            ctx.body = {
+                code: 500,
+                msg: '查询列表失败'
+            }
+        }
+    }
+
+    // 删除发贴记录
+    async deletePostByUid (ctx) {
+        const params = ctx.query
+        const obj = await getJWTPayload(ctx.header.authorization)
+        const post = await Post.findOne({ uid: obj._id, _id: params.tid })
+        if (post.id === params.tid && post.isEnd === '0') {
+            await ContentController.prototype.deletePost(ctx)
+            // const result = await Post.deleteOne({ _id: params.tid })
+            // if (result.ok === 1) {
+            //   ctx.body = {
+            //     code: 200,
+            //     msg: '删除成功'
+            //   }
+            // } else {
+            //   ctx.body = {
+            //     code: 500,
+            //     msg: '执行删除失败！'
+            //   }
+            // }
+        } else {
+            ctx.body = {
+                code: 500,
+                msg: '删除失败，无权限！'
+            }
+        }
+    }
+
+    async deletePost (ctx) {
+        const { body } = ctx.request
+        const result = await Post.deleteMany({ _id: { $in: body.ids } })
+        if (result.acknowledged === true) {
+            ctx.body = {
+                code: 200,
+                msg: '删除成功'
+            }
+        } else {
+            ctx.body = {
+                code: 500,
+                msg: '执行删除失败！'
+            }
+        }
+    }
+
 }
 
 export default new ContentController()

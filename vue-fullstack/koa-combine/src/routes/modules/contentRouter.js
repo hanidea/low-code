@@ -10,4 +10,7 @@ router.post('/upload', contentController.uploadImg)
 // 发表新贴
 router.post('/add', contentController.addPost)
 
+// 更新帖子
+router.post('/update', contentController.updatePost)
+
 export default router

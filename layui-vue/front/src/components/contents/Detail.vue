@@ -197,7 +197,7 @@
           <imooc-page
             v-show="comments.length > 0 && total > 0"
             :showType="'icon'"
-            :hasSelect="true"
+            :hasSelect="false"
             :hasTotal="false"
             :total="total"
             :size="size"

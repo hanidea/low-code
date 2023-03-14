@@ -27,6 +27,7 @@ const NoFound = () => import(/* webpackChunkName: 'nofound' */'./views/NoFound.v
 const Confirm = () => import(/* webpackChunkName: 'confirm' */'./views/Confirm.vue')
 const Reset = () => import(/* webpackChunkName: 'reset' */'./views/Reset.vue')
 const Add = () => import(/* webpackChunkName: 'add' */'./components/contents/Add.vue')
+const Edit = () => import(/* webpackChunkName: 'edit' */'./components/contents/Edit.vue')
 const Detail = () => import(/* webpackChunkName: 'detail' */'./components/contents/Detail.vue')
 
 Vue.use(Router)
@@ -87,6 +88,29 @@ const router = new Router({
       path: '/add',
       name: 'add',
       component: Add
+    },
+    {
+      path: '/edit/:tid',
+      props: true,
+      name: 'edit',
+      component: Edit,
+      beforeEnter (to, from, next) {
+        if (['detail', 'mypost'].indexOf(from.name) !== -1 && to.params.page && to.params.page.isEnd === '0') {
+          next()
+        } else {
+          const editData = localStorage.getItem('editData')
+          if (editData && editData !== '') {
+            const editObj = JSON.parse(editData)
+            if (editObj.isEnd === '0') {
+              next()
+            } else {
+              next('/')
+            }
+          } else {
+            next('/')
+          }
+        }
+      }
     },
     {
       path: '/detail/:tid',
