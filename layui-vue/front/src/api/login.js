@@ -9,7 +9,7 @@ const getCode = (sid) => {
 }
 
 const forget = (option) => {
-  return axios.post('/forget', { ...option })
+  return axios.post('/login/forget', { ...option })
 }
 
 const login = (loginInfo) => {
