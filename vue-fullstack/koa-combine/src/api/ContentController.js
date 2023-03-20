@@ -201,6 +201,23 @@ class ContentController {
         }
     }
 
+    async updatePostByTid (ctx) {
+        const { body } = ctx.request
+        const result = await Post.updateOne({ _id: body._id }, body)
+        if (result.acknowledged === true) {
+            ctx.body = {
+                code: 200,
+                data: result,
+                msg: '更新帖子成功'
+            }
+        } else {
+            ctx.body = {
+                code: 500,
+                data: result,
+                msg: '编辑帖子，更新失败'
+            }
+        }
+    }
 
     // 获取文章详情
     async getPostDetail (ctx) {
@@ -325,6 +342,71 @@ class ContentController {
                 code: 500,
                 msg: '执行删除失败！'
             }
+        }
+    }
+
+    // 添加标签
+    async addTag (ctx) {
+        const { body } = ctx.request
+        const tag = new PostTags(body)
+        await tag.save()
+        ctx.body = {
+            code: 200,
+            msg: '标签保存成功'
+        }
+    }
+
+    // 添加标签
+    async getTags (ctx) {
+        const params = ctx.query
+        const page = params.page ? parseInt(params.page) : 0
+        const limit = params.limit ? parseInt(params.limit) : 10
+        const result = await PostTags.getList({}, page, limit)
+        const total = await PostTags.countList({})
+        ctx.body = {
+            code: 200,
+            data: result,
+            total,
+            msg: '查询tags成功！'
+        }
+    }
+
+    // 删除标签
+    async removeTag (ctx) {
+        const params = ctx.query
+        const result = await PostTags.deleteOne({ id: params.ptid })
+
+        ctx.body = {
+            code: 200,
+            data: result,
+            msg: '删除成功'
+        }
+    }
+
+    // 删除标签
+    async updateTag (ctx) {
+        const { body } = ctx.request
+        const result = await PostTags.updateOne(
+            { _id: body._id },
+            body
+        )
+
+        ctx.body = {
+            code: 200,
+            data: result,
+            msg: '更新成功'
+        }
+    }
+
+    async updatePostBatch (ctx) {
+        const { body } = ctx.request
+        const result = await Post.updateMany(
+            { _id: { $in: body.ids } },
+            { $set: { ...body.settings } }
+        )
+        ctx.body = {
+            code: 200,
+            data: result
         }
     }
 

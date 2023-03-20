@@ -116,7 +116,10 @@ const router = new Router({
       path: '/detail/:tid',
       name: 'detail',
       props: true,
-      component: Detail
+      component: Detail,
+      meta: {
+        types: ['get', 'add', 'edit', 'delete']
+      }
     },
     {
       path: '/user',
