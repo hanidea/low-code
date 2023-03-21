@@ -4,6 +4,7 @@ import moment from "dayjs";
 import Post from "@/model/Post";
 import User from "@/model/User";
 import SignRecord from "@/model/SignRecord"
+import Comments from "@/model/Comments";
 class PublicController {
     constructor() {
 

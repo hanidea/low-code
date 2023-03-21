@@ -44,7 +44,6 @@ router.get('/hotPost', publicController.getHotPost)
 
 // 获取用热门评论
 router.get('/hotComments', publicController.getHotComments)
-
 // 获取用签到排行
 router.get('/hotSignRecord', publicController.getHotSignRecord)
 
