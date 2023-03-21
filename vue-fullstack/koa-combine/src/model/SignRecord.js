@@ -17,6 +17,35 @@ SignRecordSchema.pre('save', function (next){
 SignRecordSchema.statics = {
     findByUid: function (uid) {
         return this.findOne({ uid: uid }).sort({ created: -1 })
+    },
+    getLatestSign: function (page, limit) {
+        return this.find({})
+            .populate({
+                path: 'uid',
+                select: '_id name pic'
+            })
+            .skip(page * limit)
+            .limit(limit)
+            .sort({ created: -1 })
+    },
+    getTopSign: function (page, limit) {
+        return this.find({
+            created: { $gte: moment().format('YYYY-MM-DD 00:00:00') }
+        }).populate({
+            path: 'uid',
+            select: '_id name pic'
+        })
+            .skip(page * limit)
+            .limit(limit)
+            .sort({ created: 1 })
+    },
+    getSignCount: function () {
+        return this.find({}).countDocuments()
+    },
+    getTopSignCount: function () {
+        return this.find({
+            created: { $gte: moment().format('YYYY-MM-DD 00:00:00') }
+        }).countDocuments()
     }
 }
 

@@ -302,6 +302,30 @@ class ContentController {
         }
     }
 
+    // 获取用户发贴记录
+    async getPostPublic (ctx) {
+        const params = ctx.query
+        const result = await Post.getListByUid(
+            params.uid,
+            params.page,
+            params.limit ? parseInt(params.limit) : 10
+        )
+        const total = await Post.countByUid(params.uid)
+        if (result.length > 0) {
+            ctx.body = {
+                code: 200,
+                data: result,
+                total,
+                msg: '查询列表成功'
+            }
+        } else {
+            ctx.body = {
+                code: 500,
+                msg: '查询列表失败'
+            }
+        }
+    }
+
     // 删除发贴记录
     async deletePostByUid (ctx) {
         const params = ctx.query
