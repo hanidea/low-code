@@ -10,6 +10,16 @@ const getJWTPayload = token => {
     return jwt.verify(token.split(' ')[1], config.JWT_SECRET)
 }
 
+const generateToken = (payload) => {
+   if (payload) {
+       return jwt.sign({
+           ...payload
+       },config.JWT_SECRET,{expiresIn: '1d'})
+   } else {
+       throw new Error('生成token失败')
+   }
+}
+
 const checkCode = async (key, value) => {
     const redisData = await getValue(key)
     if (redisData != null) {
@@ -143,6 +153,20 @@ const getRights = (tree, menus) => {
     return flatten(arr)
 }
 
+const rand = (len = 8) =>{
+    const possible =
+        'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
+    let text = ''
+    for (let i = 0; i< len; i+=1) {
+        text += possible.charAt(Math.floor(Math.random()*possbile.length))
+    }
+    return text
+}
+
+const getTempName = () => {
+    return 'toimc_' + rand() + '@toimc.com'
+}
+
 export {
     checkCode,
     getJWTPayload,
@@ -151,5 +175,8 @@ export {
     getMenuData,
     sortMenus,
     flatten,
-    getRights
+    getRights,
+    getTempName,
+    rand,
+    generateToken
 }

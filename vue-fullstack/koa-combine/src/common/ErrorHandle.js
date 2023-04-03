@@ -10,7 +10,7 @@ export default (ctx, next) => {
       } else {
         ctx.status = err.status || 500
         ctx.body = Object.assign({
-          code: 500,
+          code: err.code || 500,
           msg: err.message,
         }, process.env.NODE_ENV === 'development' ?
           { stack: err.stack } : {})

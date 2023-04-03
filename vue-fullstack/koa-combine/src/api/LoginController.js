@@ -3,12 +3,14 @@ import bcrypt from 'bcrypt'
 import moment from 'moment'
 import jsonwebtoken from 'jsonwebtoken'
 import config from '@/config'
-import { checkCode } from '../common/Utils'
+import {checkCode, generateToken} from '../common/Utils'
 import User from '../model/User'
 import SignRecord from "@/model/SignRecord";
 import { getValue, setValue } from '@/config/RedisConfig'
 import { getJWTPayload } from '../common/Utils'
 import { v4 as uuidv4 } from 'uuid'
+import { wxGetUserInfo } from "@/common/wxUtils";
+
 class LoginController {
     async forget (ctx) {
         const { body } = ctx.request
@@ -188,6 +190,33 @@ class LoginController {
             ctx.body = {
                 code: 500,
                 msg: '链接已经失效'
+            }
+        }
+    }
+
+    async wxlogin (ctx) {
+        // 接收用户传递code
+        const { body } = ctx.request
+        // 请求微信API：https://api.weixin.qq.com/sns/jscode2session?appid=APPID&secret=SECRET&js_code=JSCODE&grant_type=authorization_code
+        // 如果用户不存在，则创建用户
+        let user
+        if (body.code) {
+            const wxUserInfo = await wxGetUserInfo(body.user, body.code)
+            if (wxUserInfo.errcode === 0) {
+                user = await User.findOrCreatedByOpenData(wxUserInfo)
+                ctx.body = {
+                    code: 200,
+                    data: user,
+                    token: generateToken({_id: user._id}),
+                    msg: '登录成功'
+                }
+            } else {
+                ctx.throw({code: wxUserInfo.errcode || 501, message: wxUserInfo.errmsg})
+            }
+        } else {
+            ctx.body = {
+                code: 500,
+                msg: '没有足够的参数'
             }
         }
     }

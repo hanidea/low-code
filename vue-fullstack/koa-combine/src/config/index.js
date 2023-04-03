@@ -15,6 +15,9 @@ const uploadPath = process.env.NODE_ENV === 'production' ? '/app/public' : path.
 const port = 3000
 const wsPort = 3001
 
+const AppID = ''
+const AppSecret = ''
+
 export default {
     DB_URL,
     // REDIS,
@@ -22,5 +25,7 @@ export default {
     baseUrl,
     uploadPath,
     port,
-    wsPort
+    wsPort,
+    AppID,
+    AppSecret
 }

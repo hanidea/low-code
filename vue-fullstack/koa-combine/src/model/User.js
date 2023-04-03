@@ -1,4 +1,5 @@
 import mongoose from "../config/DBHelpler";
+import { getTempName } from '../common/Utils'
 
 const Schema = mongoose.Schema
 
@@ -6,8 +7,8 @@ const UserSchema = new Schema({
     username: { type: String, index: { unique: true }, sparse: true },
     password: { type: String },
     name: { type: String },
-    created: { type: Date },
-    updated: { type: Date },
+    // created: { type: Date },
+    // updated: { type: Date },
     favs: { type: Number, default: 100 },
     gender: { type: String, default: '' },
     roles: { type: Array, default: ['user'] },
@@ -17,8 +18,10 @@ const UserSchema = new Schema({
     regmark: { type: String, default: '' },
     location: { type: String, default: '' },
     isVip: { type: String, default: '0' },
-    count: { type: Number, default: 0 }
-})
+    count: { type: Number, default: 0 },
+    openid: {type: String, default: '' },
+    unionid: {type: String, default: '' }
+}, { timestamps: {createdAt: 'created', updatedAt: 'updated'}})
 
 UserSchema.pre('save', function (next) {
     this.created = new Date()
@@ -111,6 +114,20 @@ UserSchema.statics = {
     },
     getTotalSignCount: function (page, limit) {
         return this.find({}).countDocuments()
+    },
+    findOrCreatedByOpenData: function (wxUserInfo) {
+        return this.findOne({ openid: wxUserInfo.openId},{unionid:0,password: 0,opendid:0}).then((user)=>{
+            return user || this.create({
+                openid: wxUserInfo.openId,
+                unionid: wxUserInfo.unionId,
+                username: getTempName(),
+                name: wxUserInfo.nickName,
+                gender: wxUserInfo.gender,
+                pic: wxUserInfo.avatarUrl,
+                location: wxUserInfo.city
+
+            })
+        })
     }
 }
 
