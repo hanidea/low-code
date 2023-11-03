@@ -1,11 +1,11 @@
-import axios from 'axios'
+// import axios from 'axios'
 import config from '@/config'
 import WXBizDataCrypt from './WXBizDataCrypt'
 import crypto from 'crypto'
 // import { setValue } from '@/config/RedisConfig'
 
 export const wxGetUserInfo = async (user, code) => {
-    const obj = await axios.get(`https://api.weixin.qq.com/sns/jscode2session?appid=${config.AppID}&secret=${config.AppSecret}&js_code=${code}&grant_type=authorization_code`)
+    // const obj = await axios.get(`https://api.weixin.qq.com/sns/jscode2session?appid=${config.AppID}&secret=${config.AppSecret}&js_code=${code}&grant_type=authorization_code`)
     if (obj.status === 200 && obj.data.session_key){
         // setValue(obj.data.openId, session_key)
         const sessionKey = obj.data.session_key
